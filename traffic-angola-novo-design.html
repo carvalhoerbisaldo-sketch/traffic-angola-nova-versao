@@ -241,7 +241,7 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 </main></div></div>
 
 <script>
-function showView(n){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='v-'+n));document.querySelectorAll('.reviewbar button').forEach(b=>b.classList.toggle('on',b.dataset.v===n));window.scrollTo(0,0)}
+ function showView(n) {   const protectedViews = ['client', 'manager', 'adm'];    if (protectedViews.includes(n)) {     if (!window.TRAFFIC_AUTH?.role || window.TRAFFIC_AUTH.role !== n) {       n = 'auth';     }   }    document.querySelectorAll('.view').forEach(v => {     v.classList.toggle('active', v.id === 'v-' + n);   });    document.querySelectorAll('.reviewbar button').forEach(b => {     b.classList.toggle('on', b.dataset.v === n);   });    window.scrollTo(0, 0); }
 document.querySelectorAll('.reviewbar button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.v)));
 function go(id){const s=document.getElementById(id);if(!s)return;const v=s.closest('.view');v.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p===s));v.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));const c=v.querySelector('.cr');if(c)c.textContent=s.dataset.t||id;const sb=v.querySelector('.sidebar');if(sb)sb.classList.remove('open');window.scrollTo(0,0)}
 document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
