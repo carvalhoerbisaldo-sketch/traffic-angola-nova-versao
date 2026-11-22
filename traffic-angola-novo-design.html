@@ -2303,4 +2303,740 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 </div>
 </div>
 
- /* =========================================    CONFIGURAÇÃO SUPABASE ========================================= */  window.TRAFFIC_CONFIG = {   supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",   supabaseAnonKey: "sb_publishable_o3kKJDkxOP74Ddyi_DiS1g_efujjOAp" };  window.trafficSupabase = window.supabase.createClient(   window.TRAFFIC_CONFIG.supabaseUrl,   window.TRAFFIC_CONFIG.supabaseAnonKey );  window.TRAFFIC_AUTH = {   role: null,   user: null };  console.info("Traffic Angola: Supabase inicializado.");   /* =========================================    MENSAGENS ========================================= */  function trafficMessage(id, message, error = false) {   const el = document.getElementById(id);   if (!el) {     alert(message);     return;   }    el.textContent = message;   el.style.color = error ? "#ff7777" : "#65d6a0"; }   /* =========================================    COMUNICAÇÃO COM EDGE FUNCTION ========================================= */  async function callTrafficFunction(action, payload = {}, token = null) {   const headers = {     "Content-Type": "application/json",     "apikey": window.TRAFFIC_CONFIG.supabaseAnonKey   };    if (token) {     headers["x-partner-session"] = token;   }    const response = await fetch(     window.TRAFFIC_CONFIG.supabaseUrl +     "/functions/v1/traffic-auth",     {       method: "POST",       headers,       body: JSON.stringify({         action,         ...payload       })     }   );    const result = await response.json();    if (!response.ok) {     throw new Error(result.error || result.message || "Falha na operação.");   }    return result; }   /* =========================================    MODO CLIENTE ========================================= */  let clientMode = "login";  function setClientMode(mode) {   clientMode = mode;    document.querySelectorAll(".tabs button").forEach((button, index) => {     button.classList.toggle(       "on",       (mode === "login" && index === 0) ||       (mode === "register" && index === 1)     );   });    const button = document.getElementById("clientLoginBtn");   if (button) {     button.textContent = mode === "login"       ? "Entrar"       : "Criar conta";   } }  async function clientAuth() {   const email = document.getElementById("clientEmail")?.value.trim();   const password = document.getElementById("clientPassword")?.value;    if (!email || !password) {     return trafficMessage(       "clientAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("clientLoginBtn");   if (button) button.disabled = true;    try {     let result;      if (clientMode === "register") {       result = await window.trafficSupabase.auth.signUp({         email,         password       });        if (!result.data.session) {         trafficMessage(           "clientAuthMessage",           "Conta criada. Confirma o teu e-mail para poderes entrar."         );         return;       }     } else {       result = await window.trafficSupabase.auth.signInWithPassword({         email,         password       });     }      if (result.error) throw result.error;      window.TRAFFIC_AUTH = {       role: "client",       user: result.data.user     };      trafficMessage(       "clientAuthMessage",       "Autenticação concluída. O painel de cliente ainda depende da integração do backend."     );    } catch (error) {     trafficMessage("clientAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO GESTOR ========================================= */  async function managerLogin() {   const code = document.getElementById("managerCode")?.value.trim();    if (!/^[A-Za-z0-9]{12}$/.test(code || "")) {     return trafficMessage(       "managerAuthMessage",       "O código deve ter exactamente 12 caracteres.",       true     );   }    const button = document.getElementById("managerLoginBtn");   if (button) button.disabled = true;    try {     const result = await callTrafficFunction("partner_login", { code });      const token =       result.token ||       result.session_token ||       result.session?.token;      if (!token) {       throw new Error("O servidor não devolveu um token de sessão.");     }      sessionStorage.setItem("traffic_partner_token", token);      window.TRAFFIC_AUTH = {       role: "manager",       user: result.partner || result.user || null     };      trafficMessage(       "managerAuthMessage",       "Código aceite. A sessão foi criada. As operações do painel ainda dependem da integração dos respectivos serviços."     );    } catch (error) {     trafficMessage("managerAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO ADMINISTRADOR ========================================= */  async function admLogin() {   const email = document.getElementById("admEmail")?.value.trim();   const password = document.getElementById("admPassword")?.value;    if (!email || !password) {     return trafficMessage(       "admAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("admLoginBtn");   if (button) button.disabled = true;    try {     const login = await window.trafficSupabase.auth.signInWithPassword({       email,       password     });      if (login.error) throw login.error;      const validation = await callTrafficFunction("admin_list");      window.TRAFFIC_AUTH = {       role: "adm",       user: login.data.user     };      trafficMessage(       "admAuthMessage",       "Administrador autenticado. As restantes operações dependem da integração do backend."     );    } catch (error) {     window.TRAFFIC_AUTH = { role: null, user: null };      trafficMessage("admAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    TERMINAR SESSÃO ========================================= */  async function trafficLogout() {   const role = window.TRAFFIC_AUTH.role;    if (role === "manager") {     const token = sessionStorage.getItem("traffic_partner_token");      if (token) {       try {         await callTrafficFunction("partner_logout", {}, token);       } catch (error) {         console.warn("Não foi possível revogar a sessão no servidor.");       }     }      sessionStorage.removeItem("traffic_partner_token");   }    await window.trafficSupabase.auth.signOut();    window.TRAFFIC_AUTH = {     role: null,     user: null   };    showView("public"); }   /* =========================================    PROTECÇÃO BÁSICA DAS VIEWS ========================================= */  const originalShowView = window.showView;  window.showView = function(view) {   const protectedViews = ["client", "manager", "adm"];    if (     protectedViews.includes(view) &&     window.TRAFFIC_AUTH.role !== view   ) {     if (typeof originalShowView === "function") {       originalShowView("auth");     }     return;   }    if (typeof originalShowView === "function") {     originalShowView(view);   } }; </script>  </body> </html>
+
+<!-- SUPABASE JS v2 -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+/* =====================================================
+   1. CONFIGURAÇÃO SUPABASE
+===================================================== */
+
+window.TRAFFIC_CONFIG = {
+  supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",
+  supabaseAnonKey: "sb_publishable_o3kKJDkxOP74Ddyi_DiS1g_efujjOAp"
+};
+
+if (!window.supabase) {
+  throw new Error("A biblioteca Supabase não foi carregada.");
+}
+
+window.trafficSupabase = window.supabase.createClient(
+  window.TRAFFIC_CONFIG.supabaseUrl,
+  window.TRAFFIC_CONFIG.supabase.anonKey ||
+  window.TRAFFIC_CONFIG.supabaseAnonKey
+);
+
+window.TRAFFIC_AUTH = {
+  role: null,
+  user: null
+};
+
+
+/* =====================================================
+   2. MENSAGENS
+===================================================== */
+
+function trafficMessage(id, message, error = false) {
+  const el = document.getElementById(id);
+
+  if (!el) {
+    console.log(message);
+    return;
+  }
+
+  el.textContent = message;
+  el.style.color = error ? "#ff7777" : "#65d6a0";
+}
+
+
+/* =====================================================
+   3. COMUNICAÇÃO COM A EDGE FUNCTION
+===================================================== */
+
+async function callTrafficFunction(action, payload = {}, token = null) {
+  const headers = {
+    "Content-Type": "application/json",
+    "apikey": window.TRAFFIC_CONFIG.supabaseAnonKey,
+    "Authorization": "Bearer " + window.TRAFFIC_CONFIG.supabaseAnonKey
+  };
+
+  if (action.startsWith("admin_")) {
+    const { data, error } =
+      await window.trafficSupabase.auth.getSession();
+
+    if (error) throw error;
+
+    const accessToken = data.session?.access_token;
+
+    if (!accessToken) {
+      throw new Error("Sessão administrativa não encontrada.");
+    }
+
+    headers.Authorization = "Bearer " + accessToken;
+  }
+
+  if (token) {
+    headers["x-partner-session"] = token;
+  }
+
+  const response = await fetch(
+    window.TRAFFIC_CONFIG.supabaseUrl +
+    "/functions/v1/traffic-auth",
+    {
+      method: "POST",
+      headers,
+      body: JSON.stringify({
+        action,
+        ...payload
+      })
+    }
+  );
+
+  const raw = await response.text();
+
+  let result = {};
+
+  try {
+    result = raw ? JSON.parse(raw) : {};
+  } catch {
+    throw new Error("Resposta inválida do servidor.");
+  }
+
+  if (!response.ok) {
+    throw new Error(
+      result.error ||
+      result.message ||
+      "Falha na comunicação com o servidor."
+    );
+  }
+
+  return result;
+}
+
+
+/* =====================================================
+   4. NAVEGAÇÃO ENTRE PAINÉIS
+===================================================== */
+
+function showView(view) {
+  const protectedViews = ["client", "manager", "adm"];
+
+  if (
+    protectedViews.includes(view) &&
+    window.TRAFFIC_AUTH.role !== view
+  ) {
+    view = "auth";
+  }
+
+  document.querySelectorAll(".view").forEach(element => {
+    element.classList.toggle(
+      "active",
+      element.id === "v-" + view
+    );
+  });
+
+  document.querySelectorAll(".reviewbar button").forEach(button => {
+    button.classList.toggle(
+      "on",
+      button.dataset.v === view
+    );
+  });
+
+  if (protectedViews.includes(view)) {
+    const activeView = document.getElementById("v-" + view);
+
+    if (activeView) {
+      const pages = activeView.querySelectorAll(".page");
+      const hasActivePage = activeView.querySelector(".page.active");
+
+      if (pages.length && !hasActivePage) {
+        pages[0].classList.add("active");
+      }
+    }
+  }
+
+  window.scrollTo(0, 0);
+}
+
+
+/* =====================================================
+   5. NAVEGAÇÃO INTERNA DOS PAINÉIS
+===================================================== */
+
+function go(id) {
+  const section = document.getElementById(id);
+
+  if (!section) return;
+
+  const view = section.closest(".view");
+
+  if (!view) return;
+
+  const viewName = view.id.replace("v-", "");
+
+  if (
+    ["client", "manager", "adm"].includes(viewName) &&
+    window.TRAFFIC_AUTH.role !== viewName
+  ) {
+    showView("auth");
+    return;
+  }
+
+  view.querySelectorAll(".page").forEach(page => {
+    page.classList.toggle("active", page === section);
+  });
+
+  view.querySelectorAll(".nav button[data-page]").forEach(button => {
+    button.classList.toggle(
+      "active",
+      button.dataset.page === id
+    );
+  });
+
+  const title = view.querySelector(".cr");
+
+  if (title) {
+    title.textContent = section.dataset.t || id;
+  }
+
+  const sidebar = view.querySelector(".sidebar");
+
+  if (sidebar) {
+    sidebar.classList.remove("open");
+  }
+
+  window.scrollTo(0, 0);
+}
+
+
+/* =====================================================
+   6. MENU MOBILE
+===================================================== */
+
+function menu(button) {
+  const view = button.closest(".view");
+
+  if (!view) return;
+
+  const sidebar = view.querySelector(".sidebar");
+
+  if (sidebar) {
+    sidebar.classList.toggle("open");
+  }
+}
+
+
+/* =====================================================
+   7. NAVEGAÇÃO POR CLIQUES
+===================================================== */
+
+document.addEventListener("click", function(event) {
+
+  const reviewButton = event.target.closest(".reviewbar button[data-v]");
+
+  if (reviewButton) {
+    showView(reviewButton.dataset.v);
+    return;
+  }
+
+  const navButton = event.target.closest(".nav button[data-page]");
+
+  if (navButton) {
+    go(navButton.dataset.page);
+    return;
+  }
+
+  const openSidebar = document.querySelector(".sidebar.open");
+
+  if (
+    openSidebar &&
+    !openSidebar.contains(event.target) &&
+    !event.target.closest(".mobilemenu")
+  ) {
+    openSidebar.classList.remove("open");
+  }
+});
+
+
+/* =====================================================
+   8. MODO DE ENTRADA DO CLIENTE
+===================================================== */
+
+let clientMode = "login";
+
+function setClientMode(mode) {
+  clientMode = mode;
+
+  const loginButton = document.getElementById("clientLoginBtn");
+  const card = loginButton?.closest(".card");
+
+  if (card) {
+    const tabs = card.querySelectorAll(".tabs button");
+
+    tabs.forEach((button, index) => {
+      button.classList.toggle(
+        "on",
+        (mode === "login" && index === 0) ||
+        (mode === "register" && index === 1)
+      );
+    });
+  }
+
+  if (loginButton) {
+    loginButton.textContent =
+      mode === "login" ? "Entrar" : "Criar conta";
+  }
+}
+
+
+/* =====================================================
+   9. AUTENTICAÇÃO DO CLIENTE
+===================================================== */
+
+async function clientAuth() {
+  const email = document.getElementById("clientEmail")?.value.trim();
+  const password = document.getElementById("clientPassword")?.value;
+
+  if (!email || !password) {
+    return trafficMessage(
+      "clientAuthMessage",
+      "Preenche o e-mail e a palavra-passe.",
+      true
+    );
+  }
+
+  const button = document.getElementById("clientLoginBtn");
+
+  if (button) button.disabled = true;
+
+  try {
+    let result;
+
+    if (clientMode === "register") {
+      result = await window.trafficSupabase.auth.signUp({
+        email,
+        password
+      });
+    } else {
+      result = await window.trafficSupabase.auth.signInWithPassword({
+        email,
+        password
+      });
+    }
+
+    if (result.error) throw result.error;
+
+    if (!result.data.session) {
+      trafficMessage(
+        "clientAuthMessage",
+        "Conta criada. Confirma o teu e-mail para poderes entrar."
+      );
+      return;
+    }
+
+    window.TRAFFIC_AUTH = {
+      role: "client",
+      user: result.data.user
+    };
+
+    sessionStorage.setItem("traffic_auth_role", "client");
+
+    showView("client");
+
+    trafficMessage(
+      "clientAuthMessage",
+      "Autenticação concluída. As funcionalidades do painel ainda dependem da integração do backend."
+    );
+
+  } catch (error) {
+    trafficMessage(
+      "clientAuthMessage",
+      error.message,
+      true
+    );
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+
+/* =====================================================
+   10. ENTRADA DO GESTOR
+===================================================== */
+
+async function managerLogin() {
+  const code = document.getElementById("managerCode")?.value.trim();
+
+  if (!/^[A-Za-z0-9]{12}$/.test(code || "")) {
+    return trafficMessage(
+      "managerAuthMessage",
+      "O código deve ter exactamente 12 caracteres.",
+      true
+    );
+  }
+
+  const button = document.getElementById("managerLoginBtn");
+
+  if (button) button.disabled = true;
+
+  try {
+    const result = await callTrafficFunction(
+      "partner_login",
+      { code }
+    );
+
+    const token =
+      result.token ||
+      result.session_token ||
+      result.session?.token;
+
+    if (!token) {
+      throw new Error("O servidor não devolveu um token de sessão.");
+    }
+
+    sessionStorage.setItem("traffic_partner_token", token);
+    sessionStorage.setItem("traffic_auth_role", "manager");
+
+    window.TRAFFIC_AUTH = {
+      role: "manager",
+      user: result.partner || result.user || null
+    };
+
+    showView("manager");
+
+    trafficMessage(
+      "managerAuthMessage",
+      "Código aceite. Sessão iniciada. As operações do painel ainda dependem da integração dos respectivos serviços."
+    );
+
+  } catch (error) {
+    trafficMessage(
+      "managerAuthMessage",
+      error.message,
+      true
+    );
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+
+/* =====================================================
+   11. ENTRADA DO ADMINISTRADOR
+===================================================== */
+
+async function admLogin() {
+  const email = document.getElementById("admEmail")?.value.trim();
+  const password = document.getElementById("admPassword")?.value;
+
+  if (!email || !password) {
+    return trafficMessage(
+      "admAuthMessage",
+      "Preenche o e-mail e a palavra-passe.",
+      true
+    );
+  }
+
+  const button = document.getElementById("admLoginBtn");
+
+  if (button) button.disabled = true;
+
+  try {
+    const login = await window.trafficSupabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (login.error) throw login.error;
+
+    // Validação obrigatória no servidor.
+    await callTrafficFunction("admin_list");
+
+    window.TRAFFIC_AUTH = {
+      role: "adm",
+      user: login.data.user
+    };
+
+    sessionStorage.setItem("traffic_auth_role", "adm");
+
+    showView("adm");
+
+    trafficMessage(
+      "admAuthMessage",
+      "Administrador autenticado. As restantes operações dependem da integração do backend."
+    );
+
+  } catch (error) {
+    window.TRAFFIC_AUTH = {
+      role: null,
+      user: null
+    };
+
+    sessionStorage.removeItem("traffic_auth_role");
+
+    await window.trafficSupabase.auth.signOut();
+
+    trafficMessage(
+      "admAuthMessage",
+      error.message,
+      true
+    );
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+
+/* =====================================================
+   12. TERMINAR SESSÃO
+===================================================== */
+
+async function trafficLogout() {
+  const role = window.TRAFFIC_AUTH.role;
+
+  if (role === "manager") {
+    const token = sessionStorage.getItem("traffic_partner_token");
+
+    if (token) {
+      try {
+        await callTrafficFunction(
+          "partner_logout",
+          {},
+          token
+        );
+      } catch (error) {
+        console.warn("Não foi possível revogar a sessão no servidor.");
+      }
+    }
+  }
+
+  sessionStorage.removeItem("traffic_partner_token");
+  sessionStorage.removeItem("traffic_auth_role");
+
+  await window.trafficSupabase.auth.signOut();
+
+  window.TRAFFIC_AUTH = {
+    role: null,
+    user: null
+  };
+
+  showView("public");
+}
+
+
+/* =====================================================
+   13. RECUPERAR SESSÃO APÓS ACTUALIZAR A PÁGINA
+===================================================== */
+
+async function restoreTrafficSession() {
+  const savedRole = sessionStorage.getItem("traffic_auth_role");
+  const partnerToken = sessionStorage.getItem("traffic_partner_token");
+
+  // Primeiro, verificar uma eventual sessão de gestor.
+  if (partnerToken) {
+    try {
+      const result = await callTrafficFunction(
+        "partner_session",
+        {},
+        partnerToken
+      );
+
+      window.TRAFFIC_AUTH = {
+        role: "manager",
+        user: result.partner || result.user || null
+      };
+
+      sessionStorage.setItem("traffic_auth_role", "manager");
+
+      showView("manager");
+      return;
+
+    } catch (error) {
+      sessionStorage.removeItem("traffic_partner_token");
+    }
+  }
+
+  const { data, error } =
+    await window.trafficSupabase.auth.getSession();
+
+  if (error || !data.session) {
+    sessionStorage.removeItem("traffic_auth_role");
+    return;
+  }
+
+  if (savedRole === "adm") {
+    try {
+      await callTrafficFunction("admin_list");
+
+      window.TRAFFIC_AUTH = {
+        role: "adm",
+        user: data.session.user
+      };
+
+      showView("adm");
+      return;
+
+    } catch (error) {
+      await window.trafficSupabase.auth.signOut();
+      sessionStorage.removeItem("traffic_auth_role");
+      return;
+    }
+  }
+
+  if (savedRole === "client") {
+    window.TRAFFIC_AUTH = {
+      role: "client",
+      user: data.session.user
+    };
+
+    showView("client");
+  }
+}
+
+
+/* =====================================================
+   14. FUNÇÕES AUXILIARES DO FORMULÁRIO
+===================================================== */
+
+const PL = {
+  basico: ["Básico", 25000, "Mensal"],
+  crescimento: ["Crescimento", 150000, "Mensal"],
+  turbo: ["Turbo", 130000, "15 dias"],
+  escala: ["Escala", 210000, "15 dias"]
+};
+
+const kz = number =>
+  number.toLocaleString("pt-PT") + " Kz";
+
+function openOrder(plan) {
+  const field = document.getElementById("fplan");
+
+  if (!field) return;
+
+  field.value = plan;
+
+  planChange();
+  pane("p1");
+  setStep(1);
+
+  document.getElementById("modal")?.classList.add("open");
+}
+
+function closeOrder() {
+  document.getElementById("modal")?.classList.remove("open");
+}
+
+function pane(id) {
+  document.querySelectorAll(".pane").forEach(element => {
+    element.classList.toggle("on", element.id === id);
+  });
+}
+
+function setStep(number) {
+  [1, 2, 3].forEach(index => {
+    const element = document.getElementById("s" + index);
+
+    if (!element) return;
+
+    element.classList.toggle("on", index === number);
+    element.classList.toggle("done", index < number);
+  });
+}
+
+function planChange() {
+  const planField = document.getElementById("fplan");
+  const siteField = document.getElementById("fsite");
+
+  if (!planField || !PL[planField.value]) return;
+
+  const plan = planField.value;
+  const basic = plan === "basico";
+  const site = siteField?.value || "sim";
+
+  const fee = (!basic && site === "nao") ? 20000 : 0;
+
+  document.getElementById("mtitle").textContent =
+    "Pedir plano " + PL[plan][0];
+
+  document.getElementById("siteblock").style.display =
+    basic ? "none" : "block";
+
+  document.getElementById("basicnote").style.display =
+    basic ? "block" : "none";
+
+  document.getElementById("furl").style.display =
+    site === "sim" ? "block" : "none";
+
+  document.getElementById("sitefee").style.display =
+    fee ? "block" : "none";
+
+  document.getElementById("sPlan").textContent =
+    "Plano " + PL[plan][0];
+
+  document.getElementById("sPrice").textContent =
+    kz(PL[plan][1]);
+
+  document.getElementById("sPer").textContent =
+    PL[plan][2];
+
+  document.getElementById("sFee").textContent =
+    kz(fee);
+
+  document.getElementById("sTot").textContent =
+    kz(PL[plan][1] + fee);
+
+  document.getElementById("gads").style.display =
+    basic ? "none" : "inline";
+}
+
+function tab(button) {
+  button.parentElement.querySelectorAll("button").forEach(element => {
+    element.classList.toggle("on", element === button);
+  });
+}
+
+
+/* =====================================================
+   15. FUNÇÕES AUXILIARES DE TABELAS
+===================================================== */
+
+function filterRows(input, tableId) {
+  const query = input.value.toLowerCase();
+
+  document.querySelectorAll("#" + tableId + " tbody tr").forEach(row => {
+    row.style.display =
+      row.innerText.toLowerCase().includes(query) ? "" : "none";
+  });
+}
+
+
+/* =====================================================
+   16. ACÇÕES AINDA NÃO IMPLEMENTADAS
+===================================================== */
+
+function pend(action) {
+  alert(
+    "Esta operação ainda não está ligada ao backend: " + action
+  );
+}
+
+
+/* =====================================================
+   17. INICIALIZAÇÃO
+===================================================== */
+
+document.addEventListener("DOMContentLoaded", async function() {
+  try {
+    await restoreTrafficSession();
+  } catch (error) {
+    console.error("Erro ao recuperar sessão:", error);
+  }
+
+  // Actualiza os valores do formulário, sem submeter pedidos.
+  if (document.getElementById("fplan")) {
+    planChange();
+  }
+});
+</script>
+ </body> </html>
