@@ -1,0 +1,4 @@
+project_id = "traffic-angola"
+
+[functions.traffic-auth]
+verify_jwt = false
