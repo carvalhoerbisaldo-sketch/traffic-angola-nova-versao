@@ -148,4 +148,4 @@ function planChange(){const p=document.getElementById('fplan').value,basic=p==='
 planChange();
 document.addEventListener('click',e=>{const o=document.querySelector('.sidebar.open');if(o&&!o.contains(e.target)&&!e.target.closest('.mobilemenu'))o.classList.remove('open')});
 (function(){const h=location.hash.slice(1);if(!h)return;const [v,p]=h.split('/');if(document.getElementById('v-'+v)){showView(v);if(p)go(p)}})();
-</script></body></html>
+ </script>  <!-- Supabase JS v2 --> <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <!-- Configuração do Supabase --> <script>   window.TRAFFIC_CONFIG = {     supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",     supabaseAnonKey: "COLOCA_AQUI_A_TUA_PUBLISHABLE_KEY"   };    window.trafficSupabase = window.supabase.createClient(     window.TRAFFIC_CONFIG.supabaseUrl,     window.TRAFFIC_CONFIG.supabaseAnonKey   );    console.info("Traffic Angola: Supabase inicializado."); </script>  </body></html>
