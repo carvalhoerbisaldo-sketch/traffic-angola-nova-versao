@@ -1,0 +1,9 @@
+
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/traffic-angola-novo-design.html"
+    }
+  ]
+}
