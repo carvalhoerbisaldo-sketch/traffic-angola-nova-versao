@@ -1235,60 +1235,1072 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 
 <!-- ============ ADM / ECOSSISTEMA ============ -->
-<div class="view" id="v-adm"><div class="app">
-<aside class="sidebar"><div class="brand"><div class="logo">TA</div><div><strong>TRAFFIC ANGOLA</strong><small>Ecossistema Digital</small></div></div>
-<div class="navlabel">UNIDADE 01 · AGÊNCIA DIGITAL</div><nav class="nav"><button class="active" data-page="a-over"><span class="ico">◫</span> Visão geral</button><button data-page="a-clients"><span class="ico">♧</span> Clientes & campanhas</button><button data-page="a-ops"><span class="ico">◈</span> Operação própria ADM</button><button data-page="a-team"><span class="ico">♙</span> Equipa & capacidade</button><button data-page="a-access"><span class="ico">⚿</span> Acessos & segurança</button><button data-page="a-chat"><span class="ico">✉</span> Conversas da equipa</button><button data-page="a-support"><span class="ico">☷</span> Suporte a clientes</button><button data-page="a-serv"><span class="ico">▤</span> Serviços digitais</button></nav>
-<div class="navlabel">UNIDADE 02 · MARKETPLACE · FASE 2</div><nav class="nav"><button data-page="k-home"><span class="ico">⌕</span> ClienteJá · Página inicial</button><button data-page="k-search"><span class="ico">⌕</span> Pesquisar empresas</button><button data-page="k-biz"><span class="ico">▣</span> Perfil de empresa</button><button data-page="k-prov"><span class="ico">♧</span> Prestadores</button><button data-page="k-panel"><span class="ico">▦</span> Painel da empresa</button><button data-page="k-leads"><span class="ico">⇢</span> Pedidos & leads</button><button data-page="k-plans"><span class="ico">◇</span> Planos & subscrições</button><button data-page="k-cons"><span class="ico">☷</span> Área do consumidor</button></nav>
-<div class="navlabel">GESTÃO CENTRAL</div><nav class="nav"><button data-page="g-fin"><span class="ico">₭</span> Financeiro central</button><button data-page="g-adm"><span class="ico">⚙</span> Administração</button><button data-page="g-rep"><span class="ico">▥</span> Relatórios</button></nav><div class="sidebar-foot">Valores a "—" aparecem quando ligados ao backend. Nenhum número é inventado.</div></aside>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" onclick="menu(this)">☰</button><div class="crumb">Ecossistema / <span class="cr">Visão geral</span></div></div><div class="topright"><span class="pill">● Sessão ADM</span><div class="avatar">ADM</div><button class="btn ghost sm" onclick="showView('public')">Terminar sessão</button></div></header>
+<div class="view" id="v-adm">
+<div class="app">
 
-<section class="page active" id="a-over" data-t="Visão geral"><div class="heading"><div><h1>Visão geral</h1><p>Agência Digital · tráfego pago.</p></div><span class="badge blue">Unidade 01</span></div><div class="grid stats"><div class="card"><div class="stat-label">Clientes activos</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Pagamentos confirmados</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Pendentes / em análise</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Clientes em fila</div><div class="stat-value">—</div></div></div><div class="grid two"><div class="card tablewrap"><h3>Subscrições por plano</h3><table><thead><tr><th>Plano</th><th>Quantidade</th><th>Confirmados</th><th>Valor confirmado</th></tr></thead><tbody><tr><td>Básico</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Crescimento</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Turbo</td><td>—</td><td>—</td><td>—</td></tr><tr><td>Escala</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div><div class="card"><h3>Atalhos</h3><div class="actions" style="flex-direction:column"><button class="btn ghost" onclick="go('a-clients')">Clientes & campanhas</button><button class="btn ghost" onclick="go('a-ops')">Operação própria ADM</button><button class="btn ghost" onclick="go('a-team')">Equipa & capacidade</button><button class="btn ghost" onclick="go('a-access')">Acessos & segurança</button></div></div></div></section>
+<aside class="sidebar">
+  <div class="brand">
+    <div class="logo">TA</div>
+    <div>
+      <strong>TRAFFIC ANGOLA</strong>
+      <small>Ecossistema Digital</small>
+    </div>
+  </div>
 
-<section class="page" id="a-clients" data-t="Clientes & campanhas"><div class="heading"><div><h1>Clientes & campanhas</h1><p>Carteira completa, pagamentos e atribuições.</p></div></div><div class="searchrow"><input placeholder="Pesquisar cliente, página ou plano..." oninput="filterRows(this,'ct')"><select><option>Todos os estados</option><option>Em fila</option><option>A aguardar pagamento</option><option>Pagamento em análise</option><option>A aguardar acesso</option><option>Activo</option><option>Pausado</option><option>Concluído</option><option>Cancelado</option></select><select><option>Todos os planos</option><option>Básico</option><option>Crescimento</option><option>Turbo</option><option>Escala</option></select><select><option>Toda a atribuição</option><option>queue</option><option>partner</option><option>adm</option></select></div><div class="card tablewrap"><table id="ct"><thead><tr><th>Empresa · Página</th><th>Plano</th><th>Atribuição</th><th>Gestor</th><th>Subscrição</th><th>Estado do cliente</th><th>Comprovativo</th></tr></thead><tbody><tr><td colspan="7" class="empty">Sem clientes carregados (admin_clients).</td></tr></tbody></table></div><div class="grid eq" style="margin-top:15px"><div class="card"><h3>Acções por cliente</h3><div class="actions"><button class="btn sm primary" onclick="pend('admin_set_payment_status: paid')">Confirmar pagamento</button><button class="btn sm danger" onclick="pend('admin_set_payment_status: rejected')">Rejeitar comprovativo</button><button class="btn sm" onclick="pend('admin_assign_queued')">Atribuir a gestor</button><button class="btn sm" onclick="pend('admin_assign_adm')">Atribuir ao ADM</button><button class="btn sm" onclick="pend('photo_list')">Fotos e documentos</button><button class="btn sm ghost" onclick="pend('admin_return_to_queue')">Devolver à fila</button></div><p class="sub" style="margin-top:12px;line-height:1.7">Confirmar só após verificar o dinheiro nos canais financeiros. Cada acção é auditada. A listagem actualiza depois de cada acção.</p></div><div class="card"><h3>Regras de atribuição</h3><p class="sub" style="line-height:1.8">• Atribuição automática só para clientes em fila (queue), nunca ADM.<br>• Máximo 12 pontos por gestor.<br>• Escala só para Gestores 1, 2 e 3.<br>• Pagamento confirmado sem gestor: continua em fila.<br>• Confirmado com gestor, sem acesso: awaiting_access.<br>• Só fica active com gestor e acesso confirmado.</p></div></div></section>
+  <div class="navlabel">UNIDADE 01 · AGÊNCIA DIGITAL</div>
+  <nav class="nav">
+    <button class="active" data-page="a-over"><span class="ico">◫</span> Visão geral</button>
+    <button data-page="a-clients"><span class="ico">♧</span> Clientes & campanhas</button>
+    <button data-page="a-ops"><span class="ico">◈</span> Operação própria ADM</button>
+    <button data-page="a-team"><span class="ico">♙</span> Equipa & capacidade</button>
+    <button data-page="a-access"><span class="ico">⚿</span> Acessos & segurança</button>
+    <button data-page="a-chat"><span class="ico">✉</span> Conversas da equipa</button>
+    <button data-page="a-support"><span class="ico">☷</span> Suporte a clientes</button>
+    <button data-page="a-serv"><span class="ico">▤</span> Serviços digitais</button>
+  </nav>
 
-<section class="page" id="a-ops" data-t="Operação própria ADM"><div class="heading"><div><h1>Operação própria ADM</h1><p>Clientes com assignment_type = adm. Identidade ADM, nunca um gestor.</p></div><span class="badge purple">ADM · Administração + Operação</span></div><div class="grid two"><div class="card tablewrap"><h3>Os meus clientes</h3><table><thead><tr><th>Empresa</th><th>Plano</th><th>Progresso</th><th>Estado</th></tr></thead><tbody><tr><td colspan="4" class="empty">Sem clientes ADM (adm_clients).</td></tr></tbody></table></div><div class="card"><h3>Registar actividade</h3><select class="field"><option>Seleccione um cliente</option></select><textarea class="field" style="height:70px" placeholder="Nota / actividade"></textarea><label class="l">Progresso (0 a 100)</label><input class="field" type="number" min="0" max="100" step="1" value="0"><label class="l">Fotografia ou documento + nota</label><input class="field" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><div class="actions"><button class="btn primary sm" onclick="pend('adm_activity_add')">Registar</button><button class="btn danger sm" onclick="if(confirm('Devolver este cliente à fila?'))pend('admin_return_to_queue')">Devolver à fila</button></div></div></div><div class="card" style="margin-top:15px"><h3>Histórico de actividades e ficheiros</h3><div class="empty">Sem registos (adm_activity_list).</div></div></section>
+  <div class="navlabel">UNIDADE 02 · MARKETPLACE · FASE 2</div>
+  <nav class="nav">
+    <button data-page="k-home">⌕ ClienteJá · Página inicial</button>
+    <button data-page="k-search">⌕ Pesquisar empresas</button>
+    <button data-page="k-biz">▣ Perfil de empresa</button>
+    <button data-page="k-prov">♧ Prestadores</button>
+    <button data-page="k-panel">▦ Painel da empresa</button>
+    <button data-page="k-leads">⇢ Pedidos & leads</button>
+    <button data-page="k-plans">◇ Planos & subscrições</button>
+    <button data-page="k-cons">☷ Área do consumidor</button>
+  </nav>
 
-<section class="page" id="a-team" data-t="Equipa & capacidade"><div class="heading"><div><h1>Equipa & capacidade</h1><p>Gestores 1 a 4, nível e carga.</p></div></div><div class="notice warn"><b>Decisão pendente:</b> Turbo = 3 pontos (HTML e backend actuais); nota antiga dizia 4. Mantido 3 até decisão explícita.</div><div class="grid two"><div class="card tablewrap"><table><thead><tr><th>Gestor</th><th>Nome de exibição</th><th>Nível</th><th>Estado</th><th>Capacidade</th></tr></thead><tbody><tr><td>Gestor 1</td><td>—</td><td><span class="badge purple">Sénior</span></td><td><span class="badge gray">—</span></td><td>— / 12</td></tr><tr><td>Gestor 2</td><td>—</td><td><span class="badge purple">Sénior</span></td><td><span class="badge gray">—</span></td><td>— / 12</td></tr><tr><td>Gestor 3</td><td>—</td><td><span class="badge purple">Sénior</span></td><td><span class="badge gray">—</span></td><td>— / 12</td></tr><tr><td>Gestor 4</td><td>—</td><td><span class="badge blue">Júnior</span></td><td><span class="badge gray">—</span></td><td>— / 12</td></tr></tbody></table></div><div class="card"><h3>Fila de clientes não atribuídos</h3><div class="empty">Fila vazia ou não ligada. Atribuição manual só com elegibilidade e capacidade.</div></div></div><p class="sub" style="margin-top:12px">Pontos: Básico 1 · Crescimento 3 · Turbo 3* · Escala 4 (só Séniores). O ADM não é Gestor 5.</p></section>
+  <div class="navlabel">GESTÃO CENTRAL</div>
+  <nav class="nav">
+    <button data-page="g-fin">₭ Financeiro central</button>
+    <button data-page="g-adm">⚙ Administração</button>
+    <button data-page="g-rep">▥ Relatórios</button>
+  </nav>
 
-<section class="page" id="a-access" data-t="Acessos & segurança"><div class="heading"><div><h1>Acessos & segurança</h1><p>Códigos individuais de 12 caracteres para os gestores.</p></div><button class="btn primary" onclick="pend('admin_bootstrap (gerar códigos iniciais)')">Gerar códigos iniciais</button></div><div class="notice sec">Cada código é mostrado <b>uma única vez</b> ao ADM, no momento da criação. Nunca se mostra hash, segredo ou código antigo. Esconder botões não é controlo de segurança: a autorização é validada no servidor.</div><div class="card tablewrap"><table><thead><tr><th>Gestor</th><th>Nome</th><th>Perfil</th><th>Código</th><th>Acções</th></tr></thead><tbody><tr><td>Gestor 1</td><td>—</td><td><span class="badge gray">—</span></td><td><span class="badge gray">Sem código activo</span></td><td><button class="btn sm" onclick="pend('admin_rotate')">Gerar novo</button> <button class="btn sm danger" onclick="pend('admin_revoke')">Revogar</button> <button class="btn sm ghost" onclick="pend('admin_activate')">Reactivar</button></td></tr><tr><td>Gestor 2</td><td>—</td><td><span class="badge gray">—</span></td><td><span class="badge gray">Sem código activo</span></td><td><button class="btn sm" onclick="pend('admin_rotate')">Gerar novo</button> <button class="btn sm danger" onclick="pend('admin_revoke')">Revogar</button> <button class="btn sm ghost" onclick="pend('admin_activate')">Reactivar</button></td></tr><tr><td>Gestor 3</td><td>—</td><td><span class="badge gray">—</span></td><td><span class="badge gray">Sem código activo</span></td><td><button class="btn sm" onclick="pend('admin_rotate')">Gerar novo</button> <button class="btn sm danger" onclick="pend('admin_revoke')">Revogar</button> <button class="btn sm ghost" onclick="pend('admin_activate')">Reactivar</button></td></tr><tr><td>Gestor 4</td><td>—</td><td><span class="badge gray">—</span></td><td><span class="badge gray">Sem código activo</span></td><td><button class="btn sm" onclick="pend('admin_rotate')">Gerar novo</button> <button class="btn sm danger" onclick="pend('admin_revoke')">Revogar</button> <button class="btn sm ghost" onclick="pend('admin_activate')">Reactivar</button></td></tr></tbody></table></div><div class="grid eq" style="margin-top:15px"><div class="card"><h3>Efeito de cada acção</h3><p class="sub" style="line-height:1.9">• <b>Gerar códigos iniciais:</b> 4 códigos aleatórios, só se ainda não há activos.<br>• <b>Gerar novo / rodar:</b> invalida o código anterior e termina sessões antigas.<br>• <b>Revogar:</b> termina sessões e impede novo login.<br>• <b>Reactivar:</b> reactiva o perfil e gera código novo; nunca restaura o revogado.</p></div><div class="card"><h3>Código gerado (apresentação única)</h3><div class="codebox">XXXXXXXXXXXX</div><p class="sub" style="margin-top:10px">Marcador visual. Pedir ao ADM que guarde o código em segurança antes de fechar.</p></div></div></section>
+  <div class="sidebar-foot">
+    Os indicadores só serão apresentados quando forem
+    carregados do backend. Nenhum valor fictício será
+    apresentado como resultado real.
+  </div>
+</aside>
 
-<section class="page" id="a-chat" data-t="Conversas da equipa"><div class="heading"><div><h1>Conversas da equipa</h1><p>Canais com lista lateral e mensagens.</p></div></div><div class="chat"><div class="list"><button class="on"># Canal da equipa</button><button># Só ADM (escrita só ADM)</button></div><div class="msgs"><div class="body"><div class="empty">Sem mensagens (chat_list). Actualização periódica sem duplicar.</div></div><div class="send"><input placeholder="Escrever mensagem..."><button class="btn primary" onclick="pend('chat_send')">Enviar</button></div></div></div></section>
+<main class="main">
 
-<section class="page" id="a-support" data-t="Suporte a clientes"><div class="heading"><div><h1>Suporte a clientes</h1><p>Supervisão de tickets.</p></div></div><div class="chat"><div class="list"><button class="on">Sem tickets</button></div><div class="msgs"><div class="body"><div class="empty">Empresa, assunto, nº do pedido, mensagens e estado.</div></div><div class="send"><input placeholder="Responder ao cliente..."><button class="btn primary" onclick="pend('support: responder')">Responder</button><button class="btn ghost" onclick="pend('support: resolver')">Marcar resolvido</button></div></div></div><p class="sub" style="margin-top:10px">Estados: <span class="badge blue">Aberto</span> <span class="badge orange">Respondido</span> <span class="badge">Resolvido</span></p></section>
+<header class="topbar">
+  <div style="display:flex;align-items:center;gap:12px">
+    <button class="btn mobilemenu" onclick="menu(this)">☰</button>
+    <div class="crumb">
+      Ecossistema / <span class="cr">Visão geral</span>
+    </div>
+  </div>
 
-<section class="page" id="a-serv" data-t="Serviços digitais"><div class="heading"><div><h1>Serviços digitais</h1><p>Tabela comercial v2. Anúncios incluídos no preço.</p></div></div><div class="grid four"><div class="plan"><span class="badge">Básico</span><div class="price">25.000 Kz <small>/mês</small></div><p class="sub">12 USD ≈ 14.400 Kz · 1 ponto</p></div><div class="plan featured"><span class="badge blue">Crescimento</span><div class="price">150.000 Kz <small>/mês</small></div><p class="sub">80 USD ≈ 96.000 Kz · 3 pontos</p></div><div class="plan"><span class="badge purple">Turbo</span><div class="price">130.000 Kz <small>/15 dias</small></div><p class="sub">75 USD ≈ 90.000 Kz · 3 pontos*</p></div><div class="plan"><span class="badge orange">Escala</span><div class="price">210.000 Kz <small>/15 dias</small></div><p class="sub">120 USD ≈ 144.000 Kz · 4 pontos</p></div></div><div class="notice" style="margin-top:15px">Site simples: 20.000 Kz, taxa única (planos não Básico sem site). Taxa 1 USD = 1.200 Kz indicativa. Renovação automática dos planos de 15 dias: <b>pendente de implementação</b>, não anunciar como funcional.</div></section>
+  <div class="topright">
+    <span class="pill">● Sessão ADM</span>
+    <div class="avatar">ADM</div>
+    <button class="btn ghost sm" onclick="trafficLogout()">
+      Terminar sessão
+    </button>
+  </div>
+</header>
 
-<section class="page" id="k-home" data-t="ClienteJá · Página inicial"><div class="heading"><div><h1>ClienteJá Angola</h1><p>Marketplace de empresas e prestadores.</p></div><span class="badge purple">Fase 2</span></div><div class="notice warn">Só desenho visual. O desenvolvimento começa depois de a Agência Digital estar estabilizada.</div><div class="card" style="background:linear-gradient(115deg,#1b3760,#172747 55%,#173a49);border-color:#31547b;padding:26px"><h2 style="margin:0 0 8px;font-size:26px">Encontre empresas e profissionais para o que precisa.</h2><p class="sub" style="font-size:13px;line-height:1.6">Pesquise serviços, compare perfis e solicite orçamentos.</p></div><div class="sectiontitle">Categorias</div><div class="grid three"><div class="category"><b>⌂</b>Construção & obras</div><div class="category"><b>⚕</b>Saúde & bem-estar</div><div class="category"><b>▣</b>Tecnologia</div><div class="category"><b>♧</b>Consultoria</div><div class="category"><b>⚙</b>Reparações</div><div class="category"><b>✦</b>Eventos</div></div></section>
-<section class="page" id="k-search" data-t="Pesquisar empresas"><div class="heading"><div><h1>Pesquisar empresas</h1><p>Directório pesquisável.</p></div><span class="badge purple">Fase 2</span></div><div class="searchrow"><input placeholder="Nome, serviço ou palavra-chave..."><select><option>Todas as categorias</option></select><select><option>Todas as províncias</option></select></div><div class="card"><div class="empty">Sem empresas. Perfis só públicos depois de aprovados.</div></div></section>
-<section class="page" id="k-biz" data-t="Perfil de empresa"><div class="heading"><div><h1>Perfil público da empresa</h1><p>Modelo de página pública.</p></div><span class="badge purple">Fase 2</span></div><div class="grid two"><div class="card"><h3>Sobre a empresa</h3><p class="sub">Descrição, serviços, contactos e horário.</p></div><div class="card"><h3>Solicitar orçamento</h3><input class="field" placeholder="Nome"><textarea class="field" style="height:70px" placeholder="Descreva o que pretende..."></textarea><button class="btn primary" onclick="pend('Fase 2')">Enviar pedido</button></div></div></section>
-<section class="page" id="k-prov" data-t="Prestadores"><div class="heading"><div><h1>Prestadores independentes</h1><p>Perfis de profissionais.</p></div><span class="badge purple">Fase 2</span></div><div class="card"><div class="empty">Sem prestadores.</div></div></section>
-<section class="page" id="k-panel" data-t="Painel da empresa"><div class="heading"><div><h1>Painel da empresa</h1><p>Gestão do perfil comercial.</p></div><span class="badge purple">Fase 2</span></div><div class="grid stats"><div class="card"><div class="stat-label">Visualizações</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Pedidos</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Contactos</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Plano</div><div class="stat-value">—</div></div></div></section>
-<section class="page" id="k-leads" data-t="Pedidos & leads"><div class="heading"><div><h1>Pedidos & leads</h1><p>Pedidos de orçamento.</p></div><span class="badge purple">Fase 2</span></div><div class="card"><div class="empty">Sem pedidos. Exige regras de correspondência, consentimento e protecção contra spam.</div></div></section>
-<section class="page" id="k-plans" data-t="Planos & subscrições"><div class="heading"><div><h1>Planos & subscrições</h1><p>Preços editáveis pela administração.</p></div><span class="badge purple">Fase 2</span></div><div class="grid three"><div class="plan"><span class="badge">Starter</span><div class="price">35.000 <small>Kz/mês</small></div></div><div class="plan featured"><span class="badge blue">Professional</span><div class="price">75.000 <small>Kz/mês</small></div></div><div class="plan"><span class="badge purple">Business</span><div class="price">150.000 <small>Kz/mês</small></div></div></div><p class="sub" style="margin-top:12px">Publicidade externa cobrada à parte. Activação só após confirmação do pagamento.</p></section>
-<section class="page" id="k-cons" data-t="Área do consumidor"><div class="heading"><div><h1>Área do consumidor</h1><p>Pedidos e contactos.</p></div><span class="badge purple">Fase 2</span></div><div class="card"><div class="empty">Sem pedidos.</div></div></section>
+<!-- VISÃO GERAL -->
+<section class="page active" id="a-over" data-t="Visão geral">
 
-<section class="page" id="g-fin" data-t="Financeiro central"><div class="heading"><div><h1>Financeiro central</h1><p>Receita confirmada, orçamento publicitário, custos e margem, separados.</p></div></div><div class="grid stats"><div class="card"><div class="stat-label">Receita confirmada</div><div class="stat-value">—</div><div class="sub">Subscrições paid</div></div><div class="card"><div class="stat-label">Em análise</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">A aguardar pagamento</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Margem</div><div class="stat-value">—</div><div class="sub">Custos de anúncios por registar</div></div></div><div class="grid eq"><div class="card"><h3>Estados da subscrição</h3><div class="timeline"><div class="event"><strong>awaiting_payment</strong><p>Pedido criado, sem pagamento submetido.</p></div><div class="event"><strong>payment_review</strong><p>Comprovativo enviado, em análise.</p></div><div class="event"><strong>paid · rejected</strong><p>Confirmado ou rejeitado pela administração.</p></div><div class="event"><strong>expired · cancelled</strong><p>Previstos; transições por implementar.</p></div></div></div><div class="card"><h3>Estados do cliente</h3><p class="sub" style="line-height:2">queued · awaiting_payment · payment_review<br>awaiting_access · active · paused<br>completed · cancelled<br><br>Estado da subscrição e estado do cliente são campos distintos.</p></div></div></section>
-<section class="page" id="g-adm" data-t="Administração"><div class="heading"><div><h1>Administração central</h1><p>Controlo transversal.</p></div><span class="badge purple">ADM</span></div><div class="notice warn"><b>A corrigir antes de publicar:</b> admin_set_payment_status e client_confirm_access usam partner_id (nulo nos clientes ADM); admin_return_to_queue deixa estados incoerentes; client_create não é transaccional; nome Facebook do gestor tem de persistir no backend.</div><div class="card"><h3>Fluxo do cliente</h3><div class="timeline"><div class="event"><strong>1 · Pedido e conta</strong><p>Formulário, Supabase Auth, client_create e subscrição.</p></div><div class="event"><strong>2 · Atribuição</strong><p>Gestor elegível ou fila.</p></div><div class="event"><strong>3 · Acesso</strong><p>Meta Business Suite (e Google Ads).</p></div><div class="event"><strong>4 · Pagamento</strong><p>Comprovativo, payment_review.</p></div><div class="event"><strong>5 · Confirmação</strong><p>ADM verifica dinheiro real, paid ou rejected.</p></div><div class="event"><strong>6 · Activação</strong><p>active, awaiting_access ou fila.</p></div></div></div></section>
-<section class="page" id="g-rep" data-t="Relatórios"><div class="heading"><div><h1>Relatórios consolidados</h1><p>Indicadores por unidade.</p></div></div><div class="card"><div class="empty">Sem dados ligados. Receitas por plano, pagamentos, capacidade dos gestores, clientes por estado, actividades e margem (após registo de custos).</div></div></section>
-</main></div></div>
+  <div class="heading">
+    <div>
+      <h1>Visão geral</h1>
+      <p>Agência Digital · tráfego pago.</p>
+    </div>
+    <span class="badge blue">Unidade 01</span>
+  </div>
 
-<script>
- function showView(n) {   const protectedViews = ['client', 'manager', 'adm'];    if (protectedViews.includes(n)) {     if (!window.TRAFFIC_AUTH?.role || window.TRAFFIC_AUTH.role !== n) {       n = 'auth';     }   }    document.querySelectorAll('.view').forEach(v => {     v.classList.toggle('active', v.id === 'v-' + n);   });    document.querySelectorAll('.reviewbar button').forEach(b => {     b.classList.toggle('on', b.dataset.v === n);   });    window.scrollTo(0, 0); }
-document.querySelectorAll('.reviewbar button').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.v)));
-function go(id){const s=document.getElementById(id);if(!s)return;const v=s.closest('.view');v.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p===s));v.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));const c=v.querySelector('.cr');if(c)c.textContent=s.dataset.t||id;const sb=v.querySelector('.sidebar');if(sb)sb.classList.remove('open');window.scrollTo(0,0)}
-document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
-function menu(b){b.closest('.view').querySelector('.sidebar').classList.toggle('open')}
-function pend(a){alert('Pré-visualização de design: esta acção ainda não está ligada ao backend ('+a+').')}
-function filterRows(i,id){const q=i.value.toLowerCase();document.querySelectorAll('#'+id+' tbody tr').forEach(r=>r.style.display=r.innerText.toLowerCase().includes(q)?'':'none')}
-function tab(b){b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b))}
-const PL={basico:['Básico',25000,'Mensal'],crescimento:['Crescimento',150000,'Mensal'],turbo:['Turbo',130000,'15 dias'],escala:['Escala',210000,'15 dias']};
-const kz=n=>n.toLocaleString('pt-PT')+' Kz';
-function openOrder(p){document.getElementById('fplan').value=p;planChange();pane('p1');setStep(1);document.getElementById('modal').classList.add('open')}
-function closeOrder(){document.getElementById('modal').classList.remove('open')}
-function pane(id){document.querySelectorAll('.pane').forEach(x=>x.classList.toggle('on',x.id===id))}
-function setStep(n){[1,2,3].forEach(i=>{const e=document.getElementById('s'+i);e.classList.toggle('on',i===n);e.classList.toggle('done',i<n)})}
-function planChange(){const p=document.getElementById('fplan').value,basic=p==='basico',site=document.getElementById('fsite').value;document.getElementById('mtitle').textContent='Pedir plano '+PL[p][0];document.getElementById('siteblock').style.display=basic?'none':'block';document.getElementById('basicnote').style.display=basic?'block':'none';document.getElementById('furl').style.display=site==='sim'?'block':'none';const fee=(!basic&&site==='nao')?20000:0;document.getElementById('sitefee').style.display=fee?'block':'none';document.getElementById('sPlan').textContent='Plano '+PL[p][0];document.getElementById('sPrice').textContent=kz(PL[p][1]);document.getElementById('sPer').textContent=PL[p][2];document.getElementById('sFee').textContent=fee?kz(fee):'0 Kz';document.getElementById('sTot').textContent=kz(PL[p][1]+fee);document.getElementById('gads').style.display=basic?'none':'inline'}
-planChange();
-document.addEventListener('click',e=>{const o=document.querySelector('.sidebar.open');if(o&&!o.contains(e.target)&&!e.target.closest('.mobilemenu'))o.classList.remove('open')});
-(function(){const h=location.hash.slice(1);if(!h)return;const [v,p]=h.split('/');if(document.getElementById('v-'+v)){showView(v);if(p)go(p)}})();
- </script>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <script> /* =========================================    CONFIGURAÇÃO SUPABASE ========================================= */  window.TRAFFIC_CONFIG = {   supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",   supabaseAnonKey: "sb_publishable_o3kKJDkxOP74Ddyi_DiS1g_efujjOAp" };  window.trafficSupabase = window.supabase.createClient(   window.TRAFFIC_CONFIG.supabaseUrl,   window.TRAFFIC_CONFIG.supabaseAnonKey );  window.TRAFFIC_AUTH = {   role: null,   user: null };  console.info("Traffic Angola: Supabase inicializado.");   /* =========================================    MENSAGENS ========================================= */  function trafficMessage(id, message, error = false) {   const el = document.getElementById(id);   if (!el) {     alert(message);     return;   }    el.textContent = message;   el.style.color = error ? "#ff7777" : "#65d6a0"; }   /* =========================================    COMUNICAÇÃO COM EDGE FUNCTION ========================================= */  async function callTrafficFunction(action, payload = {}, token = null) {   const headers = {     "Content-Type": "application/json",     "apikey": window.TRAFFIC_CONFIG.supabaseAnonKey   };    if (token) {     headers["x-partner-session"] = token;   }    const response = await fetch(     window.TRAFFIC_CONFIG.supabaseUrl +     "/functions/v1/traffic-auth",     {       method: "POST",       headers,       body: JSON.stringify({         action,         ...payload       })     }   );    const result = await response.json();    if (!response.ok) {     throw new Error(result.error || result.message || "Falha na operação.");   }    return result; }   /* =========================================    MODO CLIENTE ========================================= */  let clientMode = "login";  function setClientMode(mode) {   clientMode = mode;    document.querySelectorAll(".tabs button").forEach((button, index) => {     button.classList.toggle(       "on",       (mode === "login" && index === 0) ||       (mode === "register" && index === 1)     );   });    const button = document.getElementById("clientLoginBtn");   if (button) {     button.textContent = mode === "login"       ? "Entrar"       : "Criar conta";   } }  async function clientAuth() {   const email = document.getElementById("clientEmail")?.value.trim();   const password = document.getElementById("clientPassword")?.value;    if (!email || !password) {     return trafficMessage(       "clientAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("clientLoginBtn");   if (button) button.disabled = true;    try {     let result;      if (clientMode === "register") {       result = await window.trafficSupabase.auth.signUp({         email,         password       });        if (!result.data.session) {         trafficMessage(           "clientAuthMessage",           "Conta criada. Confirma o teu e-mail para poderes entrar."         );         return;       }     } else {       result = await window.trafficSupabase.auth.signInWithPassword({         email,         password       });     }      if (result.error) throw result.error;      window.TRAFFIC_AUTH = {       role: "client",       user: result.data.user     };      trafficMessage(       "clientAuthMessage",       "Autenticação concluída. O painel de cliente ainda depende da integração do backend."     );    } catch (error) {     trafficMessage("clientAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO GESTOR ========================================= */  async function managerLogin() {   const code = document.getElementById("managerCode")?.value.trim();    if (!/^[A-Za-z0-9]{12}$/.test(code || "")) {     return trafficMessage(       "managerAuthMessage",       "O código deve ter exactamente 12 caracteres.",       true     );   }    const button = document.getElementById("managerLoginBtn");   if (button) button.disabled = true;    try {     const result = await callTrafficFunction("partner_login", { code });      const token =       result.token ||       result.session_token ||       result.session?.token;      if (!token) {       throw new Error("O servidor não devolveu um token de sessão.");     }      sessionStorage.setItem("traffic_partner_token", token);      window.TRAFFIC_AUTH = {       role: "manager",       user: result.partner || result.user || null     };      trafficMessage(       "managerAuthMessage",       "Código aceite. A sessão foi criada. As operações do painel ainda dependem da integração dos respectivos serviços."     );    } catch (error) {     trafficMessage("managerAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO ADMINISTRADOR ========================================= */  async function admLogin() {   const email = document.getElementById("admEmail")?.value.trim();   const password = document.getElementById("admPassword")?.value;    if (!email || !password) {     return trafficMessage(       "admAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("admLoginBtn");   if (button) button.disabled = true;    try {     const login = await window.trafficSupabase.auth.signInWithPassword({       email,       password     });      if (login.error) throw login.error;      const validation = await callTrafficFunction("admin_list");      window.TRAFFIC_AUTH = {       role: "adm",       user: login.data.user     };      trafficMessage(       "admAuthMessage",       "Administrador autenticado. As restantes operações dependem da integração do backend."     );    } catch (error) {     window.TRAFFIC_AUTH = { role: null, user: null };      trafficMessage("admAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    TERMINAR SESSÃO ========================================= */  async function trafficLogout() {   const role = window.TRAFFIC_AUTH.role;    if (role === "manager") {     const token = sessionStorage.getItem("traffic_partner_token");      if (token) {       try {         await callTrafficFunction("partner_logout", {}, token);       } catch (error) {         console.warn("Não foi possível revogar a sessão no servidor.");       }     }      sessionStorage.removeItem("traffic_partner_token");   }    await window.trafficSupabase.auth.signOut();    window.TRAFFIC_AUTH = {     role: null,     user: null   };    showView("public"); }   /* =========================================    PROTECÇÃO BÁSICA DAS VIEWS ========================================= */  const originalShowView = window.showView;  window.showView = function(view) {   const protectedViews = ["client", "manager", "adm"];    if (     protectedViews.includes(view) &&     window.TRAFFIC_AUTH.role !== view   ) {     if (typeof originalShowView === "function") {       originalShowView("auth");     }     return;   }    if (typeof originalShowView === "function") {     originalShowView(view);   } }; </script>  </body> </html>
+  <div class="grid stats">
+    <div class="card">
+      <div class="stat-label">Clientes activos</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Pagamentos confirmados</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Pendentes / em análise</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Clientes em fila</div>
+      <div class="stat-value">—</div>
+    </div>
+  </div>
+
+  <div class="grid two">
+
+    <div class="card tablewrap">
+      <h3>Subscrições por plano</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Plano</th>
+            <th>Quantidade</th>
+            <th>Confirmados</th>
+            <th>Valor confirmado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Básico</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Crescimento</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Turbo</td><td>—</td><td>—</td><td>—</td></tr>
+          <tr><td>Escala</td><td>—</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Atalhos administrativos</h3>
+      <div class="actions" style="flex-direction:column">
+        <button class="btn ghost" onclick="go('a-clients')">Clientes & campanhas</button>
+        <button class="btn ghost" onclick="go('a-ops')">Operação própria ADM</button>
+        <button class="btn ghost" onclick="go('a-team')">Equipa & capacidade</button>
+        <button class="btn ghost" onclick="go('a-access')">Acessos & segurança</button>
+        <button class="btn ghost" onclick="go('g-fin')">Financeiro central</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CLIENTES E CAMPANHAS -->
+<section class="page" id="a-clients" data-t="Clientes & campanhas">
+
+  <div class="heading">
+    <div>
+      <h1>Clientes & campanhas</h1>
+      <p>Carteira completa, pagamentos, subscrições e atribuições.</p>
+    </div>
+  </div>
+
+  <div class="searchrow">
+    <input placeholder="Pesquisar cliente, página ou plano..." disabled>
+    <select disabled>
+      <option>Todos os estados</option>
+      <option>Em fila</option>
+      <option>A aguardar pagamento</option>
+      <option>Pagamento em análise</option>
+      <option>A aguardar acesso</option>
+      <option>Activo</option>
+      <option>Pausado</option>
+      <option>Concluído</option>
+      <option>Cancelado</option>
+    </select>
+    <select disabled>
+      <option>Todos os planos</option>
+      <option>Básico</option>
+      <option>Crescimento</option>
+      <option>Turbo</option>
+      <option>Escala</option>
+    </select>
+    <select disabled>
+      <option>Todas as atribuições</option>
+      <option>Fila</option>
+      <option>Gestor</option>
+      <option>ADM</option>
+    </select>
+  </div>
+
+  <div class="card tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Empresa · Página</th>
+          <th>Plano</th>
+          <th>Atribuição</th>
+          <th>Gestor</th>
+          <th>Subscrição</th>
+          <th>Estado do cliente</th>
+          <th>Pagamento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="7" class="empty">
+            A listagem será carregada através do serviço administrativo.
+            Ainda não existem dados ligados nesta interface.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid eq" style="margin-top:15px">
+
+    <div class="card">
+      <h3>Acções por cliente</h3>
+
+      <p class="sub">
+        Seleccione um cliente na listagem para consultar
+        as operações administrativas disponíveis.
+      </p>
+
+      <div class="actions">
+        <button class="btn sm primary" disabled>Confirmar pagamento</button>
+        <button class="btn sm danger" disabled>Rejeitar comprovativo</button>
+        <button class="btn sm" disabled>Atribuir a gestor</button>
+        <button class="btn sm" disabled>Atribuir ao ADM</button>
+        <button class="btn sm" disabled>Fotos e documentos</button>
+        <button class="btn sm ghost" disabled>Devolver à fila</button>
+      </div>
+
+      <div class="notice warn" style="margin-top:14px">
+        Estas operações aguardam os respectivos serviços
+        administrativos no backend. Não devem ser executadas
+        através de chamadas simuladas.
+      </div>
+
+      <p class="sub" style="margin-top:12px">
+        Todas as alterações administrativas deverão ficar
+        registadas para auditoria.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Regras de atribuição</h3>
+      <p class="sub" style="line-height:1.9">
+        • A atribuição automática considera apenas clientes elegíveis.
+        <br>
+        • Máximo de 12 pontos por gestor.
+        <br>
+        • Escala apenas para Gestores 1, 2 e 3.
+        <br>
+        • Gestor 4 é Júnior.
+        <br>
+        • Pagamento confirmado sem gestor: permanece em fila.
+        <br>
+        • Cliente com gestor e sem acesso: awaiting_access.
+        <br>
+        • Só fica activo depois de cumprir os requisitos de activação.
+        <br>
+        • ADM é uma identidade operacional independente.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- OPERAÇÃO PRÓPRIA ADM -->
+<section class="page" id="a-ops" data-t="Operação própria ADM">
+
+  <div class="heading">
+    <div>
+      <h1>Operação própria ADM</h1>
+      <p>
+        Clientes atribuídos ao ADM com assignment_type = adm.
+      </p>
+    </div>
+    <span class="badge purple">ADM · Operação</span>
+  </div>
+
+  <div class="notice">
+    A identidade ADM pode exercer funções administrativas
+    e operacionais. Os clientes desta carteira não pertencem
+    a nenhum dos quatro gestores.
+  </div>
+
+  <div class="grid two">
+
+    <div class="card tablewrap">
+      <h3>Os meus clientes</h3>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Empresa</th>
+            <th>Plano</th>
+            <th>Progresso</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="4" class="empty">
+              Carteira operacional ADM por carregar.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice warn" style="margin-top:14px">
+        A consulta da carteira ADM ainda não está implementada
+        na Edge Function publicada.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Registar actividade</h3>
+
+      <label class="l">Cliente da carteira ADM</label>
+      <select class="field" disabled>
+        <option>Clientes por carregar</option>
+      </select>
+
+      <label class="l">Descrição da actividade</label>
+      <textarea class="field" style="height:90px"
+        placeholder="Descreva o trabalho realizado..." disabled></textarea>
+
+      <label class="l">Progresso (0 a 100%)</label>
+      <input class="field" type="number"
+        min="0" max="100" step="1" placeholder="Por definir" disabled>
+
+      <label class="l">Fotografia ou documento</label>
+      <input class="field" type="file"
+        accept="image/jpeg,image/png,image/webp,application/pdf" disabled>
+
+      <div class="actions">
+        <button class="btn primary sm" disabled>Registar actividade</button>
+        <button class="btn danger sm" disabled>Devolver à fila</button>
+      </div>
+
+      <div class="notice warn" style="margin-top:14px">
+        As operações precisam de validação do cliente e da
+        identidade ADM no servidor.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <h3>Histórico de actividades e ficheiros</h3>
+    <div class="empty">
+      O histórico da carteira ADM será apresentado aqui
+      depois da integração do serviço de actividades.
+    </div>
+  </div>
+</section>
+
+<!-- EQUIPA E CAPACIDADE -->
+<section class="page" id="a-team" data-t="Equipa & capacidade">
+
+  <div class="heading">
+    <div>
+      <h1>Equipa & capacidade</h1>
+      <p>Gestores, nível, estado e carga operacional.</p>
+    </div>
+  </div>
+
+  <div class="grid two">
+
+    <div class="card tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Gestor</th>
+            <th>Nome</th>
+            <th>Nível</th>
+            <th>Estado</th>
+            <th>Capacidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gestor 1</td>
+            <td>—</td>
+            <td><span class="badge purple">Sénior</span></td>
+            <td>—</td>
+            <td>— / 12</td>
+          </tr>
+          <tr>
+            <td>Gestor 2</td>
+            <td>—</td>
+            <td><span class="badge purple">Sénior</span></td>
+            <td>—</td>
+            <td>— / 12</td>
+          </tr>
+          <tr>
+            <td>Gestor 3</td>
+            <td>—</td>
+            <td><span class="badge purple">Sénior</span></td>
+            <td>—</td>
+            <td>— / 12</td>
+          </tr>
+          <tr>
+            <td>Gestor 4</td>
+            <td>—</td>
+            <td><span class="badge blue">Júnior</span></td>
+            <td>—</td>
+            <td>— / 12</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="notice warn" style="margin-top:14px">
+        Os dados de perfil, actividade e capacidade serão
+        carregados do Supabase. Os níveis acima representam
+        a classificação definida para a equipa.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Fila de clientes não atribuídos</h3>
+
+      <div class="empty">
+        Os clientes elegíveis para atribuição serão apresentados aqui.
+      </div>
+
+      <p class="sub" style="margin-top:12px">
+        A atribuição deverá verificar a capacidade disponível,
+        os pontos do plano e a elegibilidade do gestor.
+      </p>
+
+      <button class="btn primary" disabled>
+        Atribuir cliente seleccionado
+      </button>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <h3>Regras de capacidade</h3>
+    <p class="sub" style="line-height:1.9">
+      Básico: 1 ponto.
+      <br>
+      Crescimento: 3 pontos.
+      <br>
+      Turbo: 3 pontos.
+      <br>
+      Escala: 4 pontos, exclusivamente para Gestores 1, 2 e 3.
+      <br>
+      Limite: 12 pontos por gestor.
+      <br>
+      ADM: carteira independente, não contabilizada como Gestor 5.
+    </p>
+  </div>
+</section>
+
+<!-- ACESSOS E SEGURANÇA -->
+<section class="page" id="a-access" data-t="Acessos & segurança">
+
+  <div class="heading">
+    <div>
+      <h1>Acessos & segurança</h1>
+      <p>Gestão dos códigos individuais de acesso dos gestores.</p>
+    </div>
+  </div>
+
+  <div class="notice sec">
+    Os códigos dos gestores devem ter 12 caracteres,
+    ser aleatórios e ser apresentados apenas no momento
+    da criação ou rotação. Os códigos antigos nunca
+    deverão ser recuperáveis.
+  </div>
+
+  <div class="notice warn" style="margin-top:12px">
+    A geração inicial de códigos está temporariamente bloqueada.
+    A função publicada contém uma rotina de bootstrap com códigos
+    fracos. Não executar essa rotina até a sua correcção.
+  </div>
+
+  <div class="card tablewrap" style="margin-top:15px">
+    <table>
+      <thead>
+        <tr>
+          <th>Gestor</th>
+          <th>Nome</th>
+          <th>Perfil</th>
+          <th>Estado do acesso</th>
+          <th>Operações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Gestor 1</td>
+          <td>—</td>
+          <td>Sénior</td>
+          <td>Por consultar</td>
+          <td>
+            <button class="btn sm" disabled>Gerar novo</button>
+            <button class="btn sm danger" disabled>Revogar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Gestor 2</td>
+          <td>—</td>
+          <td>Sénior</td>
+          <td>Por consultar</td>
+          <td>
+            <button class="btn sm" disabled>Gerar novo</button>
+            <button class="btn sm danger" disabled>Revogar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Gestor 3</td>
+          <td>—</td>
+          <td>Sénior</td>
+          <td>Por consultar</td>
+          <td>
+            <button class="btn sm" disabled>Gerar novo</button>
+            <button class="btn sm danger" disabled>Revogar</button>
+          </td>
+        </tr>
+        <tr>
+          <td>Gestor 4</td>
+          <td>—</td>
+          <td>Júnior</td>
+          <td>Por consultar</td>
+          <td>
+            <button class="btn sm" disabled>Gerar novo</button>
+            <button class="btn sm danger" disabled>Revogar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid two" style="margin-top:15px">
+
+    <div class="card">
+      <h3>Operações de segurança</h3>
+      <p class="sub" style="line-height:1.9">
+        • Gerar código inicial individual.
+        <br>
+        • Rodar código e invalidar o anterior.
+        <br>
+        • Revogar acesso.
+        <br>
+        • Terminar sessões antigas.
+        <br>
+        • Reactivar perfil com código novo.
+        <br>
+        • Registar cada operação na auditoria.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Princípios de segurança</h3>
+      <p class="sub" style="line-height:1.9">
+        • Nenhum código antigo é apresentado.
+        <br>
+        • Nenhum segredo é guardado no HTML.
+        <br>
+        • O servidor valida todas as operações.
+        <br>
+        • O ADM utiliza autenticação própria.
+        <br>
+        • As sessões dos gestores são revogáveis.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONVERSAS DA EQUIPA -->
+<section class="page" id="a-chat" data-t="Conversas da equipa">
+
+  <div class="heading">
+    <div>
+      <h1>Conversas da equipa</h1>
+      <p>Comunicação interna, dúvidas e avisos oficiais.</p>
+    </div>
+  </div>
+
+  <div class="chat">
+
+    <div class="list">
+      <button class="on" disabled># Canal geral</button>
+      <button disabled># Dúvidas</button>
+      <button disabled># Avisos da administração</button>
+    </div>
+
+    <div class="msgs">
+      <div class="body">
+        <div class="empty">
+          As mensagens serão carregadas do serviço de comunicação,
+          com identificação do remetente, canal, data e hora.
+        </div>
+      </div>
+
+      <div class="send">
+        <input placeholder="Escrever mensagem..." disabled>
+        <button class="btn primary" disabled>Enviar</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="notice warn" style="margin-top:14px">
+    A comunicação ainda não está integrada. A administração
+    poderá publicar avisos oficiais; os gestores não poderão
+    publicar nesse canal.
+  </div>
+</section>
+
+<!-- SUPORTE -->
+<section class="page" id="a-support" data-t="Suporte a clientes">
+
+  <div class="heading">
+    <div>
+      <h1>Suporte a clientes</h1>
+      <p>Supervisão e acompanhamento dos pedidos de assistência.</p>
+    </div>
+  </div>
+
+  <div class="chat">
+
+    <div class="list">
+      <button class="on" disabled>Todos os tickets</button>
+      <button disabled>Abertos</button>
+      <button disabled>Respondidos</button>
+      <button disabled>Resolvidos</button>
+    </div>
+
+    <div class="msgs">
+      <div class="body">
+        <div class="empty">
+          Os pedidos de suporte serão carregados com empresa,
+          assunto, número do pedido, responsável, mensagens e estado.
+        </div>
+      </div>
+
+      <div class="send">
+        <input placeholder="Responder ao cliente..." disabled>
+        <button class="btn primary" disabled>Responder</button>
+        <button class="btn ghost" disabled>Resolver</button>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="sub" style="margin-top:12px">
+    A administração supervisiona todos os tickets.
+    Os gestores só podem aceder aos tickets dos clientes
+    das respectivas carteiras.
+  </p>
+</section>
+
+<!-- SERVIÇOS DIGITAIS -->
+<section class="page" id="a-serv" data-t="Serviços digitais">
+
+  <div class="heading">
+    <div>
+      <h1>Serviços digitais</h1>
+      <p>Tabela comercial da Agência Digital.</p>
+    </div>
+  </div>
+
+  <div class="grid four">
+
+    <div class="plan">
+      <span class="badge">Básico</span>
+      <div class="price">25.000 Kz <small>/mês</small></div>
+      <p class="sub">1 ponto</p>
+    </div>
+
+    <div class="plan featured">
+      <span class="badge blue">Crescimento</span>
+      <div class="price">150.000 Kz <small>/mês</small></div>
+      <p class="sub">3 pontos</p>
+    </div>
+
+    <div class="plan">
+      <span class="badge purple">Turbo</span>
+      <div class="price">130.000 Kz <small>/15 dias</small></div>
+      <p class="sub">3 pontos</p>
+    </div>
+
+    <div class="plan">
+      <span class="badge orange">Escala</span>
+      <div class="price">210.000 Kz <small>/15 dias</small></div>
+      <p class="sub">4 pontos · Séniores</p>
+    </div>
+
+  </div>
+
+  <div class="notice" style="margin-top:15px">
+    Criação de site simples: 20.000 Kz, taxa única.
+    <br>
+    Nos planos diferentes do Básico, a criação do site
+    segue a regra comercial definida para o serviço.
+    <br>
+    Renovação automática dos planos de 15 dias:
+    <b>ainda não implementada.</b>
+    <br>
+    A publicidade externa é tratada separadamente.
+  </div>
+
+  <div class="notice warn" style="margin-top:12px">
+    Os preços e condições ainda não estão ligados a uma
+    configuração administrativa dinâmica. Os valores
+    apresentados representam a tabela comercial definida,
+    não uma consulta em tempo real.
+  </div>
+</section>
+
+<!-- CLIENTEJÁ · FASE 2 -->
+<section class="page" id="k-home" data-t="ClienteJá · Página inicial">
+
+  <div class="heading">
+    <div>
+      <h1>ClienteJá Angola</h1>
+      <p>Marketplace de empresas e prestadores.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+
+  <div class="notice warn">
+    Unidade em fase de planeamento. O desenvolvimento
+    começa depois da estabilização da Agência Digital.
+  </div>
+
+  <div class="card" style="background:linear-gradient(115deg,#1b3760,#172747 55%,#173a49);border-color:#31547b;padding:26px">
+    <h2 style="margin:0 0 8px;font-size:26px">
+      Encontre empresas e profissionais para o que precisa.
+    </h2>
+    <p class="sub" style="font-size:13px;line-height:1.6">
+      Pesquise serviços, compare perfis e solicite orçamentos.
+    </p>
+  </div>
+
+  <div class="sectiontitle">Categorias</div>
+
+  <div class="grid three">
+    <div class="category"><b>⌂</b>Construção & obras</div>
+    <div class="category"><b>⚕</b>Saúde & bem-estar</div>
+    <div class="category"><b>▣</b>Tecnologia</div>
+    <div class="category"><b>♧</b>Consultoria</div>
+    <div class="category"><b>⚙</b>Reparações</div>
+    <div class="category"><b>✦</b>Eventos</div>
+  </div>
+</section>
+
+<section class="page" id="k-search" data-t="Pesquisar empresas">
+  <div class="heading">
+    <div>
+      <h1>Pesquisar empresas</h1>
+      <p>Directório pesquisável.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="searchrow">
+    <input placeholder="Nome, serviço ou palavra-chave..." disabled>
+    <select disabled><option>Todas as categorias</option></select>
+    <select disabled><option>Todas as províncias</option></select>
+  </div>
+  <div class="card">
+    <div class="empty">Pesquisa ainda não implementada.</div>
+  </div>
+</section>
+
+<section class="page" id="k-biz" data-t="Perfil de empresa">
+  <div class="heading">
+    <div>
+      <h1>Perfil público da empresa</h1>
+      <p>Modelo de página pública.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="grid two">
+    <div class="card">
+      <h3>Sobre a empresa</h3>
+      <p class="sub">Descrição, serviços, contactos e horário.</p>
+    </div>
+    <div class="card">
+      <h3>Solicitar orçamento</h3>
+      <input class="field" placeholder="Nome" disabled>
+      <textarea class="field" style="height:70px"
+        placeholder="Descreva o que pretende..." disabled></textarea>
+      <button class="btn primary" disabled>Enviar pedido</button>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="k-prov" data-t="Prestadores">
+  <div class="heading">
+    <div>
+      <h1>Prestadores independentes</h1>
+      <p>Perfis de profissionais.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="card"><div class="empty">Directório ainda não implementado.</div></div>
+</section>
+
+<section class="page" id="k-panel" data-t="Painel da empresa">
+  <div class="heading">
+    <div>
+      <h1>Painel da empresa</h1>
+      <p>Gestão do perfil comercial.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="grid stats">
+    <div class="card"><div class="stat-label">Visualizações</div><div class="stat-value">—</div></div>
+    <div class="card"><div class="stat-label">Pedidos</div><div class="stat-value">—</div></div>
+    <div class="card"><div class="stat-label">Contactos</div><div class="stat-value">—</div></div>
+    <div class="card"><div class="stat-label">Plano</div><div class="stat-value">—</div></div>
+  </div>
+</section>
+
+<section class="page" id="k-leads" data-t="Pedidos & leads">
+  <div class="heading">
+    <div>
+      <h1>Pedidos & leads</h1>
+      <p>Pedidos de orçamento.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="card">
+    <div class="empty">
+      Gestão de leads ainda não implementada.
+      Exigirá regras de correspondência, consentimento
+      e protecção contra spam.
+    </div>
+  </div>
+</section>
+
+<section class="page" id="k-plans" data-t="Planos & subscrições">
+  <div class="heading">
+    <div>
+      <h1>Planos & subscrições</h1>
+      <p>Planos comerciais do marketplace.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="grid three">
+    <div class="plan">
+      <span class="badge">Starter</span>
+      <div class="price">35.000 <small>Kz/mês</small></div>
+    </div>
+    <div class="plan featured">
+      <span class="badge blue">Professional</span>
+      <div class="price">75.000 <small>Kz/mês</small></div>
+    </div>
+    <div class="plan">
+      <span class="badge purple">Business</span>
+      <div class="price">150.000 <small>Kz/mês</small></div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:12px">
+    Publicidade externa cobrada à parte.
+    Activação apenas após confirmação do pagamento.
+  </p>
+</section>
+
+<section class="page" id="k-cons" data-t="Área do consumidor">
+  <div class="heading">
+    <div>
+      <h1>Área do consumidor</h1>
+      <p>Pedidos e contactos.</p>
+    </div>
+    <span class="badge purple">Fase 2</span>
+  </div>
+  <div class="card"><div class="empty">Área do consumidor ainda não implementada.</div></div>
+</section>
+
+<!-- FINANCEIRO CENTRAL -->
+<section class="page" id="g-fin" data-t="Financeiro central">
+
+  <div class="heading">
+    <div>
+      <h1>Financeiro central</h1>
+      <p>Receita, publicidade, custos e margem.</p>
+    </div>
+  </div>
+
+  <div class="grid stats">
+    <div class="card">
+      <div class="stat-label">Receita confirmada</div>
+      <div class="stat-value">—</div>
+      <div class="sub">Subscrições pagas</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Em análise</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">A aguardar pagamento</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Margem operacional</div>
+      <div class="stat-value">—</div>
+      <div class="sub">Custos ainda por apurar</div>
+    </div>
+  </div>
+
+  <div class="grid eq">
+
+    <div class="card">
+      <h3>Estados da subscrição</h3>
+      <div class="timeline">
+        <div class="event">
+          <strong>awaiting_payment</strong>
+          <p>Pedido criado, sem pagamento submetido.</p>
+        </div>
+        <div class="event">
+          <strong>payment_review</strong>
+          <p>Comprovativo enviado, em análise.</p>
+        </div>
+        <div class="event">
+          <strong>paid / rejected</strong>
+          <p>Confirmado ou rejeitado pela administração.</p>
+        </div>
+        <div class="event">
+          <strong>expired / cancelled</strong>
+          <p>Transições e processos de expiração ainda por implementar.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Estados do cliente</h3>
+      <p class="sub" style="line-height:2">
+        queued
+        <br>
+        awaiting_payment
+        <br>
+        payment_review
+        <br>
+        awaiting_access
+        <br>
+        active
+        <br>
+        paused
+        <br>
+        completed
+        <br>
+        cancelled
+      </p>
+      <div class="notice warn">
+        Estado da subscrição e estado operacional do cliente
+        são informações diferentes e devem permanecer separadas.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <h3>Separação financeira</h3>
+    <p class="sub" style="line-height:1.9">
+      • Receita efectivamente recebida.
+      <br>
+      • Orçamento destinado a anúncios.
+      <br>
+      • Custos operacionais.
+      <br>
+      • Comissões e outros encargos.
+      <br>
+      • Margem real por cliente e por plano.
+    </p>
+    <div class="notice warn">
+      Um comprovativo submetido não é receita confirmada.
+      A receita só será contabilizada depois da validação financeira.
+    </div>
+  </div>
+</section>
+
+<!-- ADMINISTRAÇÃO CENTRAL -->
+<section class="page" id="g-adm" data-t="Administração">
+
+  <div class="heading">
+    <div>
+      <h1>Administração central</h1>
+      <p>Controlo transversal da Agência Digital.</p>
+    </div>
+    <span class="badge purple">ADM</span>
+  </div>
+
+  <div class="notice warn">
+    <b>Pontos técnicos que precisam de resolução antes da activação:</b>
+    <br>
+    • Pagamentos e clientes atribuídos ao ADM precisam de suportar
+    partner_id nulo sem serem confundidos com clientes não atribuídos.
+    <br>
+    • A confirmação de acesso deve suportar gestores e ADM.
+    <br>
+    • A devolução à fila deve actualizar coerentemente a atribuição
+    e o estado operacional.
+    <br>
+    • A criação do cliente, subscrição e atribuição precisa de
+    transacção ou mecanismo de compensação.
+    <br>
+    • O nome da conta Facebook do gestor precisa de persistência
+    no backend.
+    <br>
+    • Renovação e cancelamento de subscrições precisam de regras
+    completas e auditáveis.
+  </div>
+
+  <div class="card" style="margin-top:15px">
+    <h3>Fluxo operacional do cliente</h3>
+
+    <div class="timeline">
+      <div class="event">
+        <strong>1 · Pedido e conta</strong>
+        <p>Formulário, autenticação e criação segura do pedido.</p>
+      </div>
+      <div class="event">
+        <strong>2 · Atribuição</strong>
+        <p>Gestor elegível ou carteira operacional ADM.</p>
+      </div>
+      <div class="event">
+        <strong>3 · Acesso</strong>
+        <p>Concessão de acesso Meta Business Suite e Google Ads, conforme o serviço.</p>
+      </div>
+      <div class="event">
+        <strong>4 · Pagamento</strong>
+        <p>Comprovativo submetido e estado payment_review.</p>
+      </div>
+      <div class="event">
+        <strong>5 · Confirmação</strong>
+        <p>ADM verifica o recebimento real e confirma ou rejeita.</p>
+      </div>
+      <div class="event">
+        <strong>6 · Activação</strong>
+        <p>Activação apenas quando os requisitos de pagamento, atribuição e acesso estiverem cumpridos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RELATÓRIOS -->
+<section class="page" id="g-rep" data-t="Relatórios">
+
+  <div class="heading">
+    <div>
+      <h1>Relatórios consolidados</h1>
+      <p>Indicadores de desempenho por unidade.</p>
+    </div>
+  </div>
+
+  <div class="grid stats">
+    <div class="card">
+      <div class="stat-label">Clientes</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Receita</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Capacidade da equipa</div>
+      <div class="stat-value">—</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">Margem</div>
+      <div class="stat-value">—</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="empty">
+      Os relatórios serão construídos com base em dados
+      confirmados: receitas por plano, pagamentos, capacidade,
+      clientes por estado, actividades, custos e margem.
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+</div>
+
+ /* =========================================    CONFIGURAÇÃO SUPABASE ========================================= */  window.TRAFFIC_CONFIG = {   supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",   supabaseAnonKey: "sb_publishable_o3kKJDkxOP74Ddyi_DiS1g_efujjOAp" };  window.trafficSupabase = window.supabase.createClient(   window.TRAFFIC_CONFIG.supabaseUrl,   window.TRAFFIC_CONFIG.supabaseAnonKey );  window.TRAFFIC_AUTH = {   role: null,   user: null };  console.info("Traffic Angola: Supabase inicializado.");   /* =========================================    MENSAGENS ========================================= */  function trafficMessage(id, message, error = false) {   const el = document.getElementById(id);   if (!el) {     alert(message);     return;   }    el.textContent = message;   el.style.color = error ? "#ff7777" : "#65d6a0"; }   /* =========================================    COMUNICAÇÃO COM EDGE FUNCTION ========================================= */  async function callTrafficFunction(action, payload = {}, token = null) {   const headers = {     "Content-Type": "application/json",     "apikey": window.TRAFFIC_CONFIG.supabaseAnonKey   };    if (token) {     headers["x-partner-session"] = token;   }    const response = await fetch(     window.TRAFFIC_CONFIG.supabaseUrl +     "/functions/v1/traffic-auth",     {       method: "POST",       headers,       body: JSON.stringify({         action,         ...payload       })     }   );    const result = await response.json();    if (!response.ok) {     throw new Error(result.error || result.message || "Falha na operação.");   }    return result; }   /* =========================================    MODO CLIENTE ========================================= */  let clientMode = "login";  function setClientMode(mode) {   clientMode = mode;    document.querySelectorAll(".tabs button").forEach((button, index) => {     button.classList.toggle(       "on",       (mode === "login" && index === 0) ||       (mode === "register" && index === 1)     );   });    const button = document.getElementById("clientLoginBtn");   if (button) {     button.textContent = mode === "login"       ? "Entrar"       : "Criar conta";   } }  async function clientAuth() {   const email = document.getElementById("clientEmail")?.value.trim();   const password = document.getElementById("clientPassword")?.value;    if (!email || !password) {     return trafficMessage(       "clientAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("clientLoginBtn");   if (button) button.disabled = true;    try {     let result;      if (clientMode === "register") {       result = await window.trafficSupabase.auth.signUp({         email,         password       });        if (!result.data.session) {         trafficMessage(           "clientAuthMessage",           "Conta criada. Confirma o teu e-mail para poderes entrar."         );         return;       }     } else {       result = await window.trafficSupabase.auth.signInWithPassword({         email,         password       });     }      if (result.error) throw result.error;      window.TRAFFIC_AUTH = {       role: "client",       user: result.data.user     };      trafficMessage(       "clientAuthMessage",       "Autenticação concluída. O painel de cliente ainda depende da integração do backend."     );    } catch (error) {     trafficMessage("clientAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO GESTOR ========================================= */  async function managerLogin() {   const code = document.getElementById("managerCode")?.value.trim();    if (!/^[A-Za-z0-9]{12}$/.test(code || "")) {     return trafficMessage(       "managerAuthMessage",       "O código deve ter exactamente 12 caracteres.",       true     );   }    const button = document.getElementById("managerLoginBtn");   if (button) button.disabled = true;    try {     const result = await callTrafficFunction("partner_login", { code });      const token =       result.token ||       result.session_token ||       result.session?.token;      if (!token) {       throw new Error("O servidor não devolveu um token de sessão.");     }      sessionStorage.setItem("traffic_partner_token", token);      window.TRAFFIC_AUTH = {       role: "manager",       user: result.partner || result.user || null     };      trafficMessage(       "managerAuthMessage",       "Código aceite. A sessão foi criada. As operações do painel ainda dependem da integração dos respectivos serviços."     );    } catch (error) {     trafficMessage("managerAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    ENTRADA DO ADMINISTRADOR ========================================= */  async function admLogin() {   const email = document.getElementById("admEmail")?.value.trim();   const password = document.getElementById("admPassword")?.value;    if (!email || !password) {     return trafficMessage(       "admAuthMessage",       "Preenche o e-mail e a palavra-passe.",       true     );   }    const button = document.getElementById("admLoginBtn");   if (button) button.disabled = true;    try {     const login = await window.trafficSupabase.auth.signInWithPassword({       email,       password     });      if (login.error) throw login.error;      const validation = await callTrafficFunction("admin_list");      window.TRAFFIC_AUTH = {       role: "adm",       user: login.data.user     };      trafficMessage(       "admAuthMessage",       "Administrador autenticado. As restantes operações dependem da integração do backend."     );    } catch (error) {     window.TRAFFIC_AUTH = { role: null, user: null };      trafficMessage("admAuthMessage", error.message, true);   } finally {     if (button) button.disabled = false;   } }   /* =========================================    TERMINAR SESSÃO ========================================= */  async function trafficLogout() {   const role = window.TRAFFIC_AUTH.role;    if (role === "manager") {     const token = sessionStorage.getItem("traffic_partner_token");      if (token) {       try {         await callTrafficFunction("partner_logout", {}, token);       } catch (error) {         console.warn("Não foi possível revogar a sessão no servidor.");       }     }      sessionStorage.removeItem("traffic_partner_token");   }    await window.trafficSupabase.auth.signOut();    window.TRAFFIC_AUTH = {     role: null,     user: null   };    showView("public"); }   /* =========================================    PROTECÇÃO BÁSICA DAS VIEWS ========================================= */  const originalShowView = window.showView;  window.showView = function(view) {   const protectedViews = ["client", "manager", "adm"];    if (     protectedViews.includes(view) &&     window.TRAFFIC_AUTH.role !== view   ) {     if (typeof originalShowView === "function") {       originalShowView("auth");     }     return;   }    if (typeof originalShowView === "function") {     originalShowView(view);   } }; </script>  </body> </html>
