@@ -520,16 +520,370 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 </div>
 
 
+
 <!-- ============ GESTOR ============ -->
-<div class="view" id="v-manager"><div class="app">
-<aside class="sidebar"><div class="brand"><div class="logo">TA</div><div><strong>TRAFFIC ANGOLA</strong><small>Área do gestor</small></div></div>
-<div class="navlabel">GESTOR</div><nav class="nav"><button class="active" data-page="m-wallet"><span class="ico">♧</span> A minha carteira</button><button data-page="m-act"><span class="ico">◷</span> Actividades & progresso</button><button data-page="m-chat"><span class="ico">✉</span> Conversas da equipa</button><button data-page="m-support"><span class="ico">☷</span> Suporte a clientes</button></nav><div class="sidebar-foot">O gestor só vê clientes atribuídos a si. Não atribui clientes, não altera pagamentos nem gera códigos.</div></aside>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" onclick="menu(this)">☰</button><div class="crumb">Gestor / <span class="cr">A minha carteira</span></div></div><div class="topright"><span class="pill">● Sessão de gestor · 12 h</span><button class="btn ghost sm" onclick="showView('public')">Terminar sessão</button></div></header>
-<section class="page active" id="m-wallet" data-t="A minha carteira"><div class="heading"><div><h1>A minha carteira</h1><p>Clientes atribuídos ao gestor autenticado.</p></div><span class="badge purple">Gestor — · Nível —</span></div><div class="grid stats"><div class="card"><div class="stat-label">Clientes</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">Capacidade usada</div><div class="stat-value">— / 12</div></div><div class="card"><div class="stat-label">Activos</div><div class="stat-value">—</div></div><div class="card"><div class="stat-label">A aguardar acesso</div><div class="stat-value">—</div></div></div><div class="grid two"><div class="card"><h3>Clientes</h3><div class="empty">Sem clientes carregados. Cartão por cliente: empresa, página, plano, estado e informação essencial.</div></div><div class="card"><h3>O meu perfil</h3><label class="l">Nome de exibição</label><input class="field"><label class="l">Nome da conta Facebook (mostrado ao cliente)</label><input class="field"><button class="btn primary" onclick="pend('partner_save_fb_name')">Guardar</button><p class="sub" style="margin-top:10px">Persistido no backend, não em localStorage.</p></div></div></section>
-<section class="page" id="m-act" data-t="Actividades & progresso"><div class="heading"><div><h1>Actividades & progresso</h1><p>Registos de trabalho, progresso e ficheiros por cliente.</p></div></div><div class="grid eq"><div class="card"><h3>Registar actividade</h3><label class="l">Cliente</label><select class="field"><option>Seleccione um cliente da carteira</option></select><label class="l">Nota descritiva</label><textarea class="field" style="height:80px"></textarea><label class="l">Progresso (0 a 100, número inteiro)</label><input class="field" type="number" min="0" max="100" step="1" value="0"><button class="btn primary" onclick="pend('actividade + progresso')">Registar</button></div><div class="card"><h3>Fotografia ou PDF de desenvolvimento</h3><input class="field" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><label class="l">Nota (opcional)</label><input class="field"><button class="btn primary" onclick="pend('photo_upload_url / photo_register')">Carregar</button><div class="sectiontitle">Histórico</div><div class="empty">Sem registos.</div></div></div></section>
-<section class="page" id="m-chat" data-t="Conversas da equipa"><div class="heading"><div><h1>Conversas da equipa</h1><p>Canais permitidos ao gestor.</p></div></div><div class="chat"><div class="list"><button class="on"># Canal da equipa</button><button># Só ADM (leitura)</button></div><div class="msgs"><div class="body"><div class="empty">Sem mensagens. Remetente, data e hora em cada mensagem.</div></div><div class="send"><input placeholder="Escrever mensagem..."><button class="btn primary" onclick="pend('chat_send')">Enviar</button></div></div></div></section>
-<section class="page" id="m-support" data-t="Suporte a clientes"><div class="heading"><div><h1>Suporte a clientes</h1><p>Apenas tickets da sua carteira.</p></div></div><div class="chat"><div class="list"><button class="on">Sem tickets</button></div><div class="msgs"><div class="body"><div class="empty">Empresa, assunto, nº do pedido, mensagens e estado.</div></div><div class="send"><input placeholder="Responder ao cliente..."><button class="btn primary" onclick="pend('support: responder')">Responder</button></div></div></div></section>
-</main></div></div>
+<div class="view" id="v-manager">
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">TA</div>
+        <div>
+          <strong>TRAFFIC ANGOLA</strong>
+          <small>Área do gestor</small>
+        </div>
+      </div>
+
+      <div class="navlabel">GESTOR</div>
+
+      <nav class="nav">
+        <button class="active" data-page="m-wallet">
+          <span class="ico">♧</span> A minha carteira
+        </button>
+        <button data-page="m-act">
+          <span class="ico">◷</span> Actividades & progresso
+        </button>
+        <button data-page="m-chat">
+          <span class="ico">✉</span> Conversas da equipa
+        </button>
+        <button data-page="m-support">
+          <span class="ico">☷</span> Suporte a clientes
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        O gestor só pode consultar e acompanhar os clientes
+        atribuídos à sua carteira. Não pode atribuir clientes,
+        confirmar pagamentos, alterar planos ou gerar códigos
+        de acesso.
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn mobilemenu" onclick="menu(this)">☰</button>
+          <div class="crumb">
+            Gestor / <span class="cr">A minha carteira</span>
+          </div>
+        </div>
+
+        <div class="topright">
+          <span class="pill">● Sessão de gestor</span>
+          <button class="btn ghost sm" onclick="trafficLogout()">
+            Terminar sessão
+          </button>
+        </div>
+      </header>
+
+      <!-- CARTEIRA -->
+      <section class="page active" id="m-wallet"
+        data-t="A minha carteira">
+
+        <div class="heading">
+          <div>
+            <h1>A minha carteira</h1>
+            <p>
+              Clientes atribuídos ao gestor autenticado.
+            </p>
+          </div>
+
+          <span class="badge purple">
+            Perfil por carregar
+          </span>
+        </div>
+
+        <div class="grid stats">
+
+          <div class="card">
+            <div class="stat-label">Clientes atribuídos</div>
+            <div class="stat-value">Por consultar</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Capacidade utilizada</div>
+            <div class="stat-value">Por consultar</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Clientes activos</div>
+            <div class="stat-value">Por consultar</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">A aguardar acesso</div>
+            <div class="stat-value">Por consultar</div>
+          </div>
+
+        </div>
+
+        <div class="grid two">
+
+          <div class="card">
+            <h3>Os meus clientes</h3>
+
+            <div class="empty">
+              A lista de clientes será carregada a partir
+              da carteira do gestor autenticado.
+            </div>
+
+            <p class="sub" style="margin-top:12px">
+              Cada cliente deverá apresentar empresa, página,
+              plano, estado operacional, progresso e informação
+              necessária para a execução do trabalho.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>O meu perfil operacional</h3>
+
+            <label class="l">Nome de exibição</label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Dados do perfil por carregar"
+              disabled
+            >
+
+            <label class="l">
+              Nome da conta Facebook apresentado ao cliente
+            </label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Dados do perfil por carregar"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Guardar perfil
+            </button>
+
+            <div class="notice warn" style="margin-top:14px">
+              A consulta e actualização do perfil ainda não
+              estão disponíveis na Edge Function publicada.
+            </div>
+
+            <p class="sub" style="margin-top:10px">
+              Os dados do perfil deverão ser persistidos no
+              Supabase, não apenas no navegador.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ACTIVIDADES E PROGRESSO -->
+      <section class="page" id="m-act"
+        data-t="Actividades & progresso">
+
+        <div class="heading">
+          <div>
+            <h1>Actividades & progresso</h1>
+            <p>
+              Registe o trabalho realizado e acompanhe
+              o desenvolvimento dos clientes.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid eq">
+
+          <div class="card">
+            <h3>Registar actividade</h3>
+
+            <label class="l">Cliente</label>
+            <select class="field" disabled>
+              <option>Lista da carteira indisponível</option>
+            </select>
+
+            <label class="l">Nota descritiva</label>
+            <textarea
+              class="field"
+              style="height:100px"
+              placeholder="Descreva o trabalho realizado..."
+              disabled
+            ></textarea>
+
+            <label class="l">
+              Progresso (0 a 100%)
+            </label>
+
+            <input
+              class="field"
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              value="0"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Registar actividade
+            </button>
+
+            <div class="notice warn" style="margin-top:14px">
+              O registo de actividades e progresso ainda não
+              está ligado ao backend.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Fotografia ou PDF de desenvolvimento</h3>
+
+            <input
+              class="field"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              disabled
+            >
+
+            <label class="l">Nota do ficheiro</label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Descrição opcional"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Carregar ficheiro
+            </button>
+
+            <div class="sectiontitle">Histórico de ficheiros</div>
+
+            <div class="empty">
+              Os ficheiros e respectivas ligações seguras
+              serão apresentados aqui.
+            </div>
+
+            <div class="notice warn" style="margin-top:14px">
+              O carregamento e a associação dos ficheiros aos
+              clientes ainda precisam de integração com o
+              Supabase Storage e o backend.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CONVERSAS DA EQUIPA -->
+      <section class="page" id="m-chat"
+        data-t="Conversas da equipa">
+
+        <div class="heading">
+          <div>
+            <h1>Conversas da equipa</h1>
+            <p>
+              Comunicação interna e avisos da administração.
+            </p>
+          </div>
+        </div>
+
+        <div class="chat">
+
+          <div class="list">
+            <button class="on" disabled>
+              # Canal da equipa
+            </button>
+
+            <button disabled>
+              # Avisos da administração
+            </button>
+          </div>
+
+          <div class="msgs">
+
+            <div class="body">
+              <div class="empty">
+                As mensagens da equipa serão apresentadas
+                aqui, com identificação do remetente,
+                data e hora.
+              </div>
+            </div>
+
+            <div class="send">
+              <input
+                placeholder="Escrever mensagem..."
+                disabled
+              >
+
+              <button class="btn primary" disabled>
+                Enviar
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="notice warn" style="margin-top:14px">
+          A consulta e envio de mensagens ainda não estão
+          ligados ao serviço de comunicação do backend.
+          Os avisos oficiais deverão ser publicados apenas
+          pela administração.
+        </div>
+      </section>
+
+      <!-- SUPORTE A CLIENTES -->
+      <section class="page" id="m-support"
+        data-t="Suporte a clientes">
+
+        <div class="heading">
+          <div>
+            <h1>Suporte a clientes</h1>
+            <p>
+              Acompanhe os pedidos de assistência dos clientes
+              atribuídos à sua carteira.
+            </p>
+          </div>
+        </div>
+
+        <div class="chat">
+
+          <div class="list">
+            <button class="on" disabled>
+              Tickets da minha carteira
+            </button>
+          </div>
+
+          <div class="msgs">
+
+            <div class="body">
+              <div class="empty">
+                Os pedidos de suporte serão apresentados
+                aqui com empresa, assunto, número do pedido,
+                mensagens e estado.
+              </div>
+            </div>
+
+            <div class="send">
+              <input
+                placeholder="Responder ao cliente..."
+                disabled
+              >
+
+              <button class="btn primary" disabled>
+                Responder
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="notice warn" style="margin-top:14px">
+          A consulta e resposta aos tickets ainda não estão
+          ligadas ao backend. O gestor deverá ter acesso
+          exclusivamente aos tickets dos clientes da sua
+          carteira.
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
 
 <!-- ============ ADM / ECOSSISTEMA ============ -->
 <div class="view" id="v-adm"><div class="app">
