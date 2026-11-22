@@ -179,17 +179,346 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 <div class="card"><span class="badge orange">ADM</span><h3 style="margin-top:12px">Administração</h3><label class="l">E-mail</label><input class="field" type="email"><label class="l">Palavra-passe</label><input class="field" type="password"><button class="btn primary" style="width:100%" onclick="showView('adm')">Entrar como ADM</button><p class="sub">Supabase Auth. Aparece sempre como ADM.</p></div></div></div></div>
 
+
 <!-- ============ CLIENTE ============ -->
-<div class="view" id="v-client"><div class="app">
-<aside class="sidebar"><div class="brand"><div class="logo">TA</div><div><strong>TRAFFIC ANGOLA</strong><small>A minha conta</small></div></div>
-<div class="navlabel">CLIENTE</div><nav class="nav"><button class="active" data-page="c-orders"><span class="ico">▤</span> Os meus pedidos</button><button data-page="c-access"><span class="ico">⚿</span> Acesso à página</button><button data-page="c-pay"><span class="ico">₭</span> Pagamentos</button><button data-page="c-files"><span class="ico">◷</span> Fotografias & actividades</button><button data-page="c-support"><span class="ico">☷</span> Suporte</button></nav><div class="sidebar-foot">Cada cliente só vê os seus pedidos, subscrições, comprovativos, fotos e tickets. A filtragem é feita no backend (RLS).</div></aside>
-<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="btn mobilemenu" onclick="menu(this)">☰</button><div class="crumb">Cliente / <span class="cr">Os meus pedidos</span></div></div><div class="topright"><span class="pill">● Sessão de cliente</span><button class="btn ghost sm" onclick="showView('public')">Terminar sessão</button></div></header>
-<section class="page active" id="c-orders" data-t="Os meus pedidos"><div class="heading"><div><h1>Os meus pedidos</h1><p>Pedidos e subscrições da sua conta.</p></div><button class="btn primary" onclick="showView('public');openOrder('basico')">＋ Novo pedido</button></div><div class="card"><h3>Resumo do pedido</h3><div class="grid three"><div><div class="stat-label">Empresa · Página</div><b>—</b></div><div><div class="stat-label">Plano · Periodicidade</div><b>—</b></div><div><div class="stat-label">Preço · Data</div><b>—</b></div><div><div class="stat-label">Gestor atribuído</div><b>— (ou «em fila de espera»)</b></div><div><div class="stat-label">Conta Facebook do gestor</div><b>—</b></div><div><div class="stat-label">Estado de acesso</div><span class="badge gray">—</span></div></div><div class="sectiontitle">Estados (separados)</div><span class="badge orange">Subscrição: awaiting_payment</span> <span class="badge blue">Cliente: queued</span><p class="sub" style="margin-top:12px">Exemplo de apresentação dos dois estados distintos. Valores reais vêm do backend. Uma conta pode ter vários pedidos ao longo do tempo.</p></div></section>
-<section class="page" id="c-access" data-t="Acesso à página"><div class="heading"><div><h1>Acesso à página</h1><p>Conceder ou confirmar o acesso do gestor.</p></div></div><div class="notice warn">Só conceda acesso depois de a equipa confirmar o nome da conta Facebook do gestor. Nunca partilhe a sua palavra-passe.</div><div class="card"><p class="sub" style="line-height:1.8">• Meta Business Suite: adicione o gestor como anunciante/pessoa/parceiro.<br>• Google Ads (planos não Básico): aceite o convite, quando aplicável.</p><div class="actions"><button class="btn primary" onclick="pend('client_confirm_access')">Confirmei que concedi acesso</button><button class="btn ghost">Faço isto depois</button></div></div></section>
-<section class="page" id="c-pay" data-t="Pagamentos"><div class="heading"><div><h1>Pagamentos</h1><p>Valor, comprovativo e estado da subscrição.</p></div></div><div class="grid eq"><div class="card"><h3>Valor devido / confirmado</h3><div class="stat-value">—</div><p class="sub">Separado do estado operacional do pedido.</p></div><div class="card"><h3>Carregar ou reenviar comprovativo</h3><p class="sub">Disponível quando a subscrição está em awaiting_payment ou rejected.</p><input class="field" type="file" accept="image/jpeg,image/png,image/webp,application/pdf"><button class="btn primary" onclick="pend('photo_upload_url / photo_register')">Enviar comprovativo</button><p class="sub" style="margin-top:10px">Enviar não confirma o pagamento. Só a administração o confirma.</p></div></div></section>
-<section class="page" id="c-files" data-t="Fotografias & actividades"><div class="heading"><div><h1>Fotografias & actividades</h1><p>Evidências e progresso publicados pela equipa.</p></div></div><div class="grid eq"><div class="card"><h3>Fotografias e documentos</h3><div class="empty">Sem ficheiros. Abertos por ligações seguras temporárias.</div></div><div class="card"><h3>Actividades e progresso</h3><div class="empty">Sem actividades registadas.</div></div></div></section>
-<section class="page" id="c-support" data-t="Suporte"><div class="heading"><div><h1>Suporte</h1><p>Pedidos, mensagens e estado do ticket.</p></div><button class="btn primary" onclick="pend('support: criar pedido')">＋ Novo pedido de suporte</button></div><div class="card"><div class="chat"><div class="list"><button class="on">Sem pedidos</button></div><div class="msgs"><div class="body"><div class="empty">Sem mensagens. Notificação visual quando houver nova resposta.</div></div><div class="send"><input placeholder="Escrever resposta..."><button class="btn primary" onclick="pend('support: responder')">Enviar</button></div></div></div><p class="sub" style="margin-top:10px">Estados: <span class="badge blue">Aberto</span> <span class="badge orange">Respondido</span> <span class="badge">Resolvido</span></p></div></section>
-</main></div></div>
+<div class="view" id="v-client">
+  <div class="app">
+
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">TA</div>
+        <div>
+          <strong>TRAFFIC ANGOLA</strong>
+          <small>A minha conta</small>
+        </div>
+      </div>
+
+      <div class="navlabel">CLIENTE</div>
+
+      <nav class="nav">
+        <button class="active" data-page="c-orders">
+          <span class="ico">▤</span> Os meus pedidos
+        </button>
+        <button data-page="c-access">
+          <span class="ico">⚿</span> Acesso à página
+        </button>
+        <button data-page="c-pay">
+          <span class="ico">₭</span> Pagamentos
+        </button>
+        <button data-page="c-files">
+          <span class="ico">◷</span> Fotografias & actividades
+        </button>
+        <button data-page="c-support">
+          <span class="ico">☷</span> Suporte
+        </button>
+      </nav>
+
+      <div class="sidebar-foot">
+        A sua conta apresenta exclusivamente os seus pedidos,
+        subscrições, pagamentos, documentos, actividades e pedidos
+        de suporte. O acesso aos dados deverá ser protegido pelas
+        políticas de segurança do backend.
+      </div>
+    </aside>
+
+    <main class="main">
+
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px">
+          <button class="btn mobilemenu" onclick="menu(this)">☰</button>
+          <div class="crumb">
+            Cliente / <span class="cr">Os meus pedidos</span>
+          </div>
+        </div>
+
+        <div class="topright">
+          <span class="pill">● Sessão de cliente</span>
+          <button class="btn ghost sm" onclick="trafficLogout()">
+            Terminar sessão
+          </button>
+        </div>
+      </header>
+
+      <!-- OS MEUS PEDIDOS -->
+      <section class="page active" id="c-orders" data-t="Os meus pedidos">
+
+        <div class="heading">
+          <div>
+            <h1>Os meus pedidos</h1>
+            <p>Consulte os seus pedidos e subscrições.</p>
+          </div>
+
+          <button class="btn primary"
+            onclick="showView('public');openOrder('basico')">
+            ＋ Novo pedido
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>Resumo dos pedidos</h3>
+
+          <div class="empty">
+            Os dados dos seus pedidos serão apresentados aqui
+            depois da ligação ao serviço de consulta de clientes.
+          </div>
+
+          <div class="sectiontitle">Informação do pedido</div>
+
+          <div class="grid three">
+
+            <div>
+              <div class="stat-label">Empresa · Página</div>
+              <b>Dados indisponíveis</b>
+            </div>
+
+            <div>
+              <div class="stat-label">Plano · Periodicidade</div>
+              <b>Dados indisponíveis</b>
+            </div>
+
+            <div>
+              <div class="stat-label">Preço · Data</div>
+              <b>Dados indisponíveis</b>
+            </div>
+
+            <div>
+              <div class="stat-label">Gestor atribuído</div>
+              <b>Por consultar</b>
+            </div>
+
+            <div>
+              <div class="stat-label">Conta Facebook do gestor</div>
+              <b>Por consultar</b>
+            </div>
+
+            <div>
+              <div class="stat-label">Estado de acesso</div>
+              <span class="badge gray">Por consultar</span>
+            </div>
+
+          </div>
+
+          <div class="sectiontitle">Estados do pedido</div>
+
+          <p class="sub">
+            O estado da subscrição e o estado operacional do cliente
+            serão apresentados separadamente, conforme os dados
+            confirmados pelo backend.
+          </p>
+
+        </div>
+      </section>
+
+      <!-- ACESSO À PÁGINA -->
+      <section class="page" id="c-access" data-t="Acesso à página">
+
+        <div class="heading">
+          <div>
+            <h1>Acesso à página</h1>
+            <p>Informações sobre a concessão de acesso à equipa.</p>
+          </div>
+        </div>
+
+        <div class="notice warn">
+          Só conceda acesso depois de a equipa confirmar o nome
+          da conta Facebook do gestor. Nunca partilhe a sua
+          palavra-passe pessoal.
+        </div>
+
+        <div class="card">
+
+          <h3>Como conceder acesso</h3>
+
+          <p class="sub" style="line-height:1.8">
+            • Meta Business Suite: adicione o gestor como pessoa,
+            anunciante ou parceiro, conforme as instruções recebidas.
+            <br>
+            • Google Ads: nos planos aplicáveis, aceite o convite
+            enviado pela equipa.
+          </p>
+
+          <div class="notice warn">
+            A confirmação de acesso ainda não está ligada ao serviço
+            de backend. Por isso, não é possível registar esta
+            operação nesta versão.
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" disabled>
+              Confirmar concessão de acesso
+            </button>
+
+            <button class="btn ghost" disabled>
+              Faço isto depois
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PAGAMENTOS -->
+      <section class="page" id="c-pay" data-t="Pagamentos">
+
+        <div class="heading">
+          <div>
+            <h1>Pagamentos</h1>
+            <p>Consulte valores, comprovativos e estado da subscrição.</p>
+          </div>
+        </div>
+
+        <div class="grid eq">
+
+          <div class="card">
+            <h3>Resumo financeiro</h3>
+
+            <div class="stat-label">Valor devido</div>
+            <div class="stat-value">Por consultar</div>
+
+            <div class="stat-label" style="margin-top:18px">
+              Valor confirmado
+            </div>
+            <div class="stat-value">Por consultar</div>
+
+            <p class="sub">
+              A confirmação financeira é efectuada exclusivamente
+              pela administração depois da validação do pagamento.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>Comprovativo de pagamento</h3>
+
+            <p class="sub">
+              O envio de comprovativos será disponibilizado quando
+              a integração de armazenamento e registo estiver pronta.
+            </p>
+
+            <input
+              class="field"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Enviar comprovativo
+            </button>
+
+            <div class="notice warn" style="margin-top:14px">
+              O carregamento e o registo do comprovativo ainda não
+              estão ligados ao backend. Não envie ficheiros por
+              este formulário nesta versão.
+            </div>
+
+            <p class="sub" style="margin-top:10px">
+              O envio de um comprovativo nunca significa aprovação
+              automática do pagamento.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FOTOGRAFIAS E ACTIVIDADES -->
+      <section class="page" id="c-files"
+        data-t="Fotografias & actividades">
+
+        <div class="heading">
+          <div>
+            <h1>Fotografias & actividades</h1>
+            <p>
+              Acompanhe o desenvolvimento do trabalho realizado
+              pela equipa.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid eq">
+
+          <div class="card">
+            <h3>Fotografias e documentos</h3>
+
+            <div class="empty">
+              Os ficheiros associados aos seus pedidos serão
+              apresentados aqui através de ligações seguras.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Actividades e progresso</h3>
+
+            <div class="empty">
+              O histórico de actividades e actualizações dos
+              gestores será apresentado aqui.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- SUPORTE -->
+      <section class="page" id="c-support" data-t="Suporte">
+
+        <div class="heading">
+          <div>
+            <h1>Suporte</h1>
+            <p>
+              Consulte os seus pedidos de assistência e comunicações
+              com a equipa.
+            </p>
+          </div>
+
+          <button class="btn primary" disabled>
+            ＋ Novo pedido de suporte
+          </button>
+        </div>
+
+        <div class="card">
+
+          <div class="chat">
+
+            <div class="list">
+              <button class="on" disabled>
+                Pedidos de suporte
+              </button>
+            </div>
+
+            <div class="msgs">
+
+              <div class="body">
+                <div class="empty">
+                  Os seus pedidos de suporte e respectivas
+                  mensagens serão apresentados aqui depois
+                  da integração do serviço de suporte.
+                </div>
+              </div>
+
+              <div class="send">
+                <input
+                  placeholder="Escrever resposta..."
+                  disabled
+                >
+
+                <button class="btn primary" disabled>
+                  Enviar
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="notice warn" style="margin-top:14px">
+            A criação de tickets, envio de mensagens e consulta
+            de respostas ainda não estão ligados ao backend.
+          </div>
+
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
 
 <!-- ============ GESTOR ============ -->
 <div class="view" id="v-manager"><div class="app">
