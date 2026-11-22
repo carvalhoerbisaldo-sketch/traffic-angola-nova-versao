@@ -521,6 +521,7 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 
 
+
 <!-- ============ GESTOR ============ -->
 <div class="view" id="v-manager">
   <div class="app">
@@ -530,11 +531,11 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
         <div class="logo">TA</div>
         <div>
           <strong>TRAFFIC ANGOLA</strong>
-          <small>Área do gestor</small>
+          <small>Área operacional</small>
         </div>
       </div>
 
-      <div class="navlabel">GESTOR</div>
+      <div class="navlabel">OPERAÇÃO</div>
 
       <nav class="nav">
         <button class="active" data-page="m-wallet">
@@ -552,10 +553,10 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
       </nav>
 
       <div class="sidebar-foot">
-        O gestor só pode consultar e acompanhar os clientes
-        atribuídos à sua carteira. Não pode atribuir clientes,
-        confirmar pagamentos, alterar planos ou gerar códigos
-        de acesso.
+        A carteira apresenta exclusivamente os clientes
+        atribuídos à identidade operacional autenticada.
+        A atribuição, gestão de pagamentos, planos e códigos
+        permanece reservada à administração.
       </div>
     </aside>
 
@@ -565,17 +566,365 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
         <div style="display:flex;align-items:center;gap:12px">
           <button class="btn mobilemenu" onclick="menu(this)">☰</button>
           <div class="crumb">
-            Gestor / <span class="cr">A minha carteira</span>
+            Operação / <span class="cr">A minha carteira</span>
           </div>
         </div>
 
         <div class="topright">
-          <span class="pill">● Sessão de gestor</span>
+          <span class="pill">● Sessão operacional</span>
           <button class="btn ghost sm" onclick="trafficLogout()">
             Terminar sessão
           </button>
         </div>
       </header>
+
+      <!-- CARTEIRA -->
+      <section class="page active" id="m-wallet"
+        data-t="A minha carteira">
+
+        <div class="heading">
+          <div>
+            <h1>A minha carteira</h1>
+            <p>
+              Clientes atribuídos à sua identidade operacional.
+            </p>
+          </div>
+
+          <span class="badge purple">
+            Aguardando dados do servidor
+          </span>
+        </div>
+
+        <div class="grid stats">
+
+          <div class="card">
+            <div class="stat-label">Clientes atribuídos</div>
+            <div class="stat-value">—</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Capacidade utilizada</div>
+            <div class="stat-value">—</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">Clientes activos</div>
+            <div class="stat-value">—</div>
+          </div>
+
+          <div class="card">
+            <div class="stat-label">A aguardar acesso</div>
+            <div class="stat-value">—</div>
+          </div>
+
+        </div>
+
+        <div class="grid two">
+
+          <div class="card">
+            <div class="row" style="justify-content:space-between">
+              <h3>Os meus clientes</h3>
+              <span class="badge gray">Por carregar</span>
+            </div>
+
+            <div class="empty">
+              A carteira será carregada a partir do Supabase,
+              respeitando a identidade do gestor autenticado.
+            </div>
+
+            <p class="sub" style="margin-top:12px">
+              Cada registo deverá apresentar empresa, página,
+              plano, estado operacional, progresso e informação
+              necessária para executar o serviço.
+            </p>
+
+            <div class="notice warn" style="margin-top:14px">
+              A consulta da carteira ainda não está implementada
+              na Edge Function publicada.
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>O meu perfil operacional</h3>
+
+            <label class="l">Identidade operacional</label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Por carregar"
+              disabled
+            >
+
+            <label class="l">Nome de exibição</label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Por carregar"
+              disabled
+            >
+
+            <label class="l">
+              Nome da conta Facebook apresentado ao cliente
+            </label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Por carregar"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Guardar perfil
+            </button>
+
+            <div class="notice warn" style="margin-top:14px">
+              A consulta e actualização do perfil precisam
+              de integração com o backend.
+            </div>
+
+            <p class="sub" style="margin-top:10px">
+              O perfil deverá identificar correctamente
+              Gestor 1, Gestor 2, Gestor 3, Gestor 4 ou ADM,
+              sem partilha de identidades.
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ACTIVIDADES E PROGRESSO -->
+      <section class="page" id="m-act"
+        data-t="Actividades & progresso">
+
+        <div class="heading">
+          <div>
+            <h1>Actividades & progresso</h1>
+            <p>
+              Registe o trabalho realizado e acompanhe
+              o desenvolvimento dos seus clientes.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid eq">
+
+          <div class="card">
+            <h3>Registar actividade</h3>
+
+            <label class="l">Cliente da minha carteira</label>
+            <select class="field" disabled>
+              <option>Clientes por carregar</option>
+            </select>
+
+            <label class="l">Tipo de actividade</label>
+            <select class="field" disabled>
+              <option>Seleccionar tipo de actividade</option>
+              <option>Configuração de campanha</option>
+              <option>Criação de anúncios</option>
+              <option>Optimização</option>
+              <option>Análise de resultados</option>
+              <option>Reunião ou contacto</option>
+              <option>Outra actividade</option>
+            </select>
+
+            <label class="l">Descrição do trabalho realizado</label>
+            <textarea
+              class="field"
+              style="height:110px"
+              placeholder="Descreva a actividade realizada..."
+              disabled
+            ></textarea>
+
+            <label class="l">Progresso do trabalho (0 a 100%)</label>
+            <input
+              class="field"
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              placeholder="Por definir"
+              disabled
+            >
+
+            <div class="notice warn" style="margin-top:14px">
+              O registo de actividades ainda não está ligado
+              ao backend. Os campos serão activados após
+              implementação da operação segura.
+            </div>
+
+            <button class="btn primary" disabled>
+              Registar actividade
+            </button>
+          </div>
+
+          <div class="card">
+            <h3>Fotografia ou PDF de desenvolvimento</h3>
+
+            <p class="sub">
+              Anexe evidências do trabalho realizado para
+              o cliente seleccionado.
+            </p>
+
+            <label class="l">Cliente</label>
+            <select class="field" disabled>
+              <option>Clientes por carregar</option>
+            </select>
+
+            <label class="l">Ficheiro</label>
+            <input
+              class="field"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,application/pdf"
+              disabled
+            >
+
+            <label class="l">Descrição do ficheiro</label>
+            <input
+              class="field"
+              type="text"
+              placeholder="Ex.: Configuração da campanha"
+              disabled
+            >
+
+            <button class="btn primary" disabled>
+              Carregar ficheiro
+            </button>
+
+            <div class="sectiontitle">Histórico de ficheiros</div>
+
+            <div class="empty">
+              Os ficheiros associados aos clientes serão
+              apresentados aqui através de ligações seguras.
+            </div>
+
+            <div class="notice warn" style="margin-top:14px">
+              O carregamento deverá utilizar o bucket privado
+              traffic-client-photos, com validação de permissões
+              e associação ao cliente no backend.
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CONVERSAS DA EQUIPA -->
+      <section class="page" id="m-chat"
+        data-t="Conversas da equipa">
+
+        <div class="heading">
+          <div>
+            <h1>Conversas da equipa</h1>
+            <p>
+              Comunicação interna e avisos oficiais.
+            </p>
+          </div>
+        </div>
+
+        <div class="chat">
+
+          <div class="list">
+            <button class="on" disabled>
+              # Canal geral
+            </button>
+
+            <button disabled>
+              # Avisos da administração
+            </button>
+
+            <button disabled>
+              # Dúvidas
+            </button>
+          </div>
+
+          <div class="msgs">
+
+            <div class="body">
+              <div class="empty">
+                As mensagens serão carregadas do serviço
+                de comunicação da equipa, com identificação
+                do remetente, canal, data e hora.
+              </div>
+            </div>
+
+            <div class="send">
+              <input
+                placeholder="Escrever mensagem..."
+                disabled
+              >
+
+              <button class="btn primary" disabled>
+                Enviar
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="notice warn" style="margin-top:14px">
+          A consulta e envio de mensagens ainda não estão
+          integrados. Os gestores poderão participar nos canais
+          autorizados, mas apenas a administração poderá
+          publicar avisos oficiais.
+        </div>
+      </section>
+
+      <!-- SUPORTE A CLIENTES -->
+      <section class="page" id="m-support"
+        data-t="Suporte a clientes">
+
+        <div class="heading">
+          <div>
+            <h1>Suporte a clientes</h1>
+            <p>
+              Acompanhe os pedidos de assistência dos clientes
+              atribuídos à sua carteira.
+            </p>
+          </div>
+        </div>
+
+        <div class="chat">
+
+          <div class="list">
+            <button class="on" disabled>
+              Tickets da minha carteira
+            </button>
+          </div>
+
+          <div class="msgs">
+
+            <div class="body">
+              <div class="empty">
+                Os tickets serão carregados com identificação
+                do cliente, assunto, número do pedido,
+                mensagens e estado.
+              </div>
+            </div>
+
+            <div class="send">
+              <input
+                placeholder="Responder ao cliente..."
+                disabled
+              >
+
+              <button class="btn primary" disabled>
+                Responder
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="notice warn" style="margin-top:14px">
+          O gestor só poderá consultar e responder a tickets
+          de clientes da sua carteira. A administração terá
+          acesso de supervisão. Esta regra deverá ser imposta
+          no backend e nas políticas RLS, não apenas na interface.
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
 
       <!-- CARTEIRA -->
       <section class="page active" id="m-wallet"
