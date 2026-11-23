@@ -64,7 +64,6 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 <!-- ============ ENTRADAS ============ -->
 <div class="view" id="v-auth"><div class="authgrid"><div class="heading"><div><h1>Entradas</h1><p>Três mecanismos separados, validados no servidor.</p></div><button class="btn ghost" onclick="showView('public')">← Site público</button></div><div class="notice sec">O antigo selector «Ver como» não existe. A identidade vem sempre da sessão validada no backend, nunca de uma escolha na interface.</div>
- <div class="card">   <span class="badge blue">Cliente</span>   <h3 style="margin-top:12px">Conta de cliente</h3>    <div class="tabs">     <button class="on" type="button" onclick="setClientMode('login')">Entrar</button>     <button type="button" onclick="setClientMode('register')">Criar conta</button>   </div>    <label class="l" for="clientEmail">E-mail</label>   <input class="field" id="clientEmail" type="email" autocomplete="email" placeholder="teu@email.com">    <label class="l" for="clientPassword">Palavra-passe</label>   <input class="field" id="clientPassword" type="password" autocomplete="current-password" placeholder="Palavra-passe">    <button class="btn primary" id="clientLoginBtn" type="button" style="width:100%" onclick="clientAuth()">     Entrar   </button>    <p class="sub" id="clientAuthMessage">Acesso através do Supabase Auth.</p> </div>
 
 <div class="grid three">
 
@@ -177,7 +176,8 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 </div>
 
-<div class="card"><span class="badge orange">ADM</span><h3 style="margin-top:12px">Administração</h3><label class="l">E-mail</label><input class="field" type="email"><label class="l">Palavra-passe</label><input class="field" type="password"><button class="btn primary" style="width:100%" onclick="showView('adm')">Entrar como ADM</button><p class="sub">Supabase Auth. Aparece sempre como ADM.</p></div></div></div></div>
+</div>
+</div>
 
 
 <!-- ============ CLIENTE ============ -->
@@ -926,312 +926,6 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
   </div>
 </div>
 
-      <!-- CARTEIRA -->
-      <section class="page active" id="m-wallet"
-        data-t="A minha carteira">
-
-        <div class="heading">
-          <div>
-            <h1>A minha carteira</h1>
-            <p>
-              Clientes atribuídos ao gestor autenticado.
-            </p>
-          </div>
-
-          <span class="badge purple">
-            Perfil por carregar
-          </span>
-        </div>
-
-        <div class="grid stats">
-
-          <div class="card">
-            <div class="stat-label">Clientes atribuídos</div>
-            <div class="stat-value">Por consultar</div>
-          </div>
-
-          <div class="card">
-            <div class="stat-label">Capacidade utilizada</div>
-            <div class="stat-value">Por consultar</div>
-          </div>
-
-          <div class="card">
-            <div class="stat-label">Clientes activos</div>
-            <div class="stat-value">Por consultar</div>
-          </div>
-
-          <div class="card">
-            <div class="stat-label">A aguardar acesso</div>
-            <div class="stat-value">Por consultar</div>
-          </div>
-
-        </div>
-
-        <div class="grid two">
-
-          <div class="card">
-            <h3>Os meus clientes</h3>
-
-            <div class="empty">
-              A lista de clientes será carregada a partir
-              da carteira do gestor autenticado.
-            </div>
-
-            <p class="sub" style="margin-top:12px">
-              Cada cliente deverá apresentar empresa, página,
-              plano, estado operacional, progresso e informação
-              necessária para a execução do trabalho.
-            </p>
-          </div>
-
-          <div class="card">
-            <h3>O meu perfil operacional</h3>
-
-            <label class="l">Nome de exibição</label>
-            <input
-              class="field"
-              type="text"
-              placeholder="Dados do perfil por carregar"
-              disabled
-            >
-
-            <label class="l">
-              Nome da conta Facebook apresentado ao cliente
-            </label>
-            <input
-              class="field"
-              type="text"
-              placeholder="Dados do perfil por carregar"
-              disabled
-            >
-
-            <button class="btn primary" disabled>
-              Guardar perfil
-            </button>
-
-            <div class="notice warn" style="margin-top:14px">
-              A consulta e actualização do perfil ainda não
-              estão disponíveis na Edge Function publicada.
-            </div>
-
-            <p class="sub" style="margin-top:10px">
-              Os dados do perfil deverão ser persistidos no
-              Supabase, não apenas no navegador.
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ACTIVIDADES E PROGRESSO -->
-      <section class="page" id="m-act"
-        data-t="Actividades & progresso">
-
-        <div class="heading">
-          <div>
-            <h1>Actividades & progresso</h1>
-            <p>
-              Registe o trabalho realizado e acompanhe
-              o desenvolvimento dos clientes.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid eq">
-
-          <div class="card">
-            <h3>Registar actividade</h3>
-
-            <label class="l">Cliente</label>
-            <select class="field" disabled>
-              <option>Lista da carteira indisponível</option>
-            </select>
-
-            <label class="l">Nota descritiva</label>
-            <textarea
-              class="field"
-              style="height:100px"
-              placeholder="Descreva o trabalho realizado..."
-              disabled
-            ></textarea>
-
-            <label class="l">
-              Progresso (0 a 100%)
-            </label>
-
-            <input
-              class="field"
-              type="number"
-              min="0"
-              max="100"
-              step="1"
-              value="0"
-              disabled
-            >
-
-            <button class="btn primary" disabled>
-              Registar actividade
-            </button>
-
-            <div class="notice warn" style="margin-top:14px">
-              O registo de actividades e progresso ainda não
-              está ligado ao backend.
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Fotografia ou PDF de desenvolvimento</h3>
-
-            <input
-              class="field"
-              type="file"
-              accept="image/jpeg,image/png,image/webp,application/pdf"
-              disabled
-            >
-
-            <label class="l">Nota do ficheiro</label>
-            <input
-              class="field"
-              type="text"
-              placeholder="Descrição opcional"
-              disabled
-            >
-
-            <button class="btn primary" disabled>
-              Carregar ficheiro
-            </button>
-
-            <div class="sectiontitle">Histórico de ficheiros</div>
-
-            <div class="empty">
-              Os ficheiros e respectivas ligações seguras
-              serão apresentados aqui.
-            </div>
-
-            <div class="notice warn" style="margin-top:14px">
-              O carregamento e a associação dos ficheiros aos
-              clientes ainda precisam de integração com o
-              Supabase Storage e o backend.
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- CONVERSAS DA EQUIPA -->
-      <section class="page" id="m-chat"
-        data-t="Conversas da equipa">
-
-        <div class="heading">
-          <div>
-            <h1>Conversas da equipa</h1>
-            <p>
-              Comunicação interna e avisos da administração.
-            </p>
-          </div>
-        </div>
-
-        <div class="chat">
-
-          <div class="list">
-            <button class="on" disabled>
-              # Canal da equipa
-            </button>
-
-            <button disabled>
-              # Avisos da administração
-            </button>
-          </div>
-
-          <div class="msgs">
-
-            <div class="body">
-              <div class="empty">
-                As mensagens da equipa serão apresentadas
-                aqui, com identificação do remetente,
-                data e hora.
-              </div>
-            </div>
-
-            <div class="send">
-              <input
-                placeholder="Escrever mensagem..."
-                disabled
-              >
-
-              <button class="btn primary" disabled>
-                Enviar
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="notice warn" style="margin-top:14px">
-          A consulta e envio de mensagens ainda não estão
-          ligados ao serviço de comunicação do backend.
-          Os avisos oficiais deverão ser publicados apenas
-          pela administração.
-        </div>
-      </section>
-
-      <!-- SUPORTE A CLIENTES -->
-      <section class="page" id="m-support"
-        data-t="Suporte a clientes">
-
-        <div class="heading">
-          <div>
-            <h1>Suporte a clientes</h1>
-            <p>
-              Acompanhe os pedidos de assistência dos clientes
-              atribuídos à sua carteira.
-            </p>
-          </div>
-        </div>
-
-        <div class="chat">
-
-          <div class="list">
-            <button class="on" disabled>
-              Tickets da minha carteira
-            </button>
-          </div>
-
-          <div class="msgs">
-
-            <div class="body">
-              <div class="empty">
-                Os pedidos de suporte serão apresentados
-                aqui com empresa, assunto, número do pedido,
-                mensagens e estado.
-              </div>
-            </div>
-
-            <div class="send">
-              <input
-                placeholder="Responder ao cliente..."
-                disabled
-              >
-
-              <button class="btn primary" disabled>
-                Responder
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="notice warn" style="margin-top:14px">
-          A consulta e resposta aos tickets ainda não estão
-          ligadas ao backend. O gestor deverá ter acesso
-          exclusivamente aos tickets dos clientes da sua
-          carteira.
-        </div>
-      </section>
-
-    </main>
-  </div>
-</div>
 
 
 <!-- ============ ADM / ECOSSISTEMA ============ -->
@@ -2566,15 +2260,15 @@ document.addEventListener("click", function(event) {
 let clientMode = "login";
 
 function setClientMode(mode) {
+  if (mode !== "login" && mode !== "register") return;
+
   clientMode = mode;
 
   const loginButton = document.getElementById("clientLoginBtn");
   const card = loginButton?.closest(".card");
 
   if (card) {
-    const tabs = card.querySelectorAll(".tabs button");
-
-    tabs.forEach((button, index) => {
+    card.querySelectorAll(".tabs button").forEach((button, index) => {
       button.classList.toggle(
         "on",
         (mode === "login" && index === 0) ||
@@ -2584,10 +2278,15 @@ function setClientMode(mode) {
   }
 
   if (loginButton) {
-    loginButton.textContent =
-      mode === "login" ? "Entrar" : "Criar conta";
+    loginButton.textContent = mode === "login" ? "Entrar" : "Criar conta";
+  }
+
+  const password = document.getElementById("clientPassword");
+  if (password) {
+    password.autocomplete = mode === "login" ? "current-password" : "new-password";
   }
 }
+
 
 
 /* =====================================================
@@ -2666,9 +2365,9 @@ async function clientAuth() {
 ===================================================== */
 
 async function managerLogin() {
-  const code = document.getElementById("managerCode")?.value.trim();
+  const code = document.getElementById("managerCode")?.value.trim().toUpperCase();
 
-  if (!/^[A-Za-z0-9]{12}$/.test(code || "")) {
+  if (!/^[A-Z0-9]{12}$/.test(code || "")) {
     return trafficMessage(
       "managerAuthMessage",
       "O código deve ter exactamente 12 caracteres.",
@@ -2677,22 +2376,14 @@ async function managerLogin() {
   }
 
   const button = document.getElementById("managerLoginBtn");
-
   if (button) button.disabled = true;
 
   try {
-    const result = await callTrafficFunction(
-      "partner_login",
-      { code }
-    );
+    const result = await callTrafficFunction("partner_login", { code });
+    const token = result.token || result.session_token || result.session?.token;
 
-    const token =
-      result.token ||
-      result.session_token ||
-      result.session?.token;
-
-    if (!token) {
-      throw new Error("O servidor não devolveu um token de sessão.");
+    if (!token || !result.partner_id || !result.partner_name) {
+      throw new Error("O servidor não devolveu um token e uma identidade de gestor válidos.");
     }
 
     sessionStorage.setItem("traffic_partner_token", token);
@@ -2700,27 +2391,23 @@ async function managerLogin() {
 
     window.TRAFFIC_AUTH = {
       role: "manager",
-      user: result.partner || result.user || null
+      user: {
+        id: result.partner_id,
+        display_name: result.partner_name
+      }
     };
 
     showView("manager");
-
     trafficMessage(
       "managerAuthMessage",
       "Código aceite. Sessão iniciada. As operações do painel ainda dependem da integração dos respectivos serviços."
     );
-
   } catch (error) {
-    trafficMessage(
-      "managerAuthMessage",
-      error.message,
-      true
-    );
+    trafficMessage("managerAuthMessage", error.message || "Não foi possível iniciar a sessão.", true);
   } finally {
     if (button) button.disabled = false;
   }
 }
-
 
 /* =====================================================
    11. ENTRADA DO ADMINISTRADOR
@@ -2793,20 +2480,16 @@ async function admLogin() {
 ===================================================== */
 
 async function trafficLogout() {
-  const role = window.TRAFFIC_AUTH.role;
+  const role = window.TRAFFIC_AUTH?.role || sessionStorage.getItem("traffic_auth_role");
 
   if (role === "manager") {
     const token = sessionStorage.getItem("traffic_partner_token");
 
     if (token) {
       try {
-        await callTrafficFunction(
-          "partner_logout",
-          {},
-          token
-        );
+        await callTrafficFunction("partner_logout", {}, token);
       } catch (error) {
-        console.warn("Não foi possível revogar a sessão no servidor.");
+        console.warn("Não foi possível confirmar a revogação da sessão no servidor.", error);
       }
     }
   }
@@ -2814,16 +2497,14 @@ async function trafficLogout() {
   sessionStorage.removeItem("traffic_partner_token");
   sessionStorage.removeItem("traffic_auth_role");
 
-  await window.trafficSupabase.auth.signOut();
+  if (window.trafficSupabase?.auth) {
+    const { error } = await window.trafficSupabase.auth.signOut();
+    if (error) console.error("Erro ao terminar sessão Supabase:", error);
+  }
 
-  window.TRAFFIC_AUTH = {
-    role: null,
-    user: null
-  };
-
+  window.TRAFFIC_AUTH = { role: null, user: null };
   showView("public");
 }
-
 
 /* =====================================================
    13. RECUPERAR SESSÃO APÓS ACTUALIZAR A PÁGINA
@@ -2833,67 +2514,61 @@ async function restoreTrafficSession() {
   const savedRole = sessionStorage.getItem("traffic_auth_role");
   const partnerToken = sessionStorage.getItem("traffic_partner_token");
 
-  // Primeiro, verificar uma eventual sessão de gestor.
   if (partnerToken) {
     try {
-      const result = await callTrafficFunction(
-        "partner_session",
-        {},
-        partnerToken
-      );
+      const result = await callTrafficFunction("partner_session", {}, partnerToken);
+
+      if (result.valid !== true || !result.partner_id || !result.partner_name) {
+        throw new Error("A sessão do gestor não foi validada pelo servidor.");
+      }
 
       window.TRAFFIC_AUTH = {
         role: "manager",
-        user: result.partner || result.user || null
+        user: {
+          id: result.partner_id,
+          display_name: result.partner_name
+        }
       };
 
       sessionStorage.setItem("traffic_auth_role", "manager");
-
       showView("manager");
       return;
-
     } catch (error) {
       sessionStorage.removeItem("traffic_partner_token");
+      if (savedRole === "manager") sessionStorage.removeItem("traffic_auth_role");
     }
   }
 
-  const { data, error } =
-    await window.trafficSupabase.auth.getSession();
+  const { data, error } = await window.trafficSupabase.auth.getSession();
 
   if (error || !data.session) {
     sessionStorage.removeItem("traffic_auth_role");
+    window.TRAFFIC_AUTH = { role: null, user: null };
     return;
   }
 
   if (savedRole === "adm") {
     try {
       await callTrafficFunction("admin_list");
-
-      window.TRAFFIC_AUTH = {
-        role: "adm",
-        user: data.session.user
-      };
-
+      window.TRAFFIC_AUTH = { role: "adm", user: data.session.user };
       showView("adm");
       return;
-
     } catch (error) {
       await window.trafficSupabase.auth.signOut();
       sessionStorage.removeItem("traffic_auth_role");
+      window.TRAFFIC_AUTH = { role: null, user: null };
       return;
     }
   }
 
   if (savedRole === "client") {
-    window.TRAFFIC_AUTH = {
-      role: "client",
-      user: data.session.user
-    };
-
+    window.TRAFFIC_AUTH = { role: "client", user: data.session.user };
     showView("client");
+    return;
   }
-}
 
+  window.TRAFFIC_AUTH = { role: null, user: null };
+}
 
 /* =====================================================
    14. FUNÇÕES AUXILIARES DO FORMULÁRIO
