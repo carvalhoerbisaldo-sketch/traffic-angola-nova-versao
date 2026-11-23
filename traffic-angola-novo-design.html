@@ -2,7 +2,7 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Traffic Angola | Novo design</title>
+<title>Traffic Angola</title>
 <style>
 :root{--bg:#0b1020;--panel:#121a2d;--panel2:#172238;--line:#26334d;--text:#edf2ff;--muted:#93a1bb;--blue:#5b8cff;--cyan:#35c6d8;--green:#31c48d;--orange:#f5a742;--red:#f16d78;--purple:#a78bfa}
 *{box-sizing:border-box}body{margin:0;padding-top:0;background:var(--bg);color:var(--text);font:14px Inter,system-ui,-apple-system,Segoe UI,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}a{color:var(--blue)}
@@ -40,9 +40,9 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 
 <!-- ============ SITE PÚBLICO ============ -->
 <div class="view active" id="v-public">
-<div class="pub-top"><div class="brand"><div class="logo">TA</div><div><strong>TRAFFIC ANGOLA</strong><small>Tráfego pago em Angola</small></div></div><div class="pub-links"><a href="#como">Como funciona</a><a href="#planos">Planos</a><a href="#video">Vídeo</a><a href="#faq">Perguntas</a></div><div class="actions"><button class="btn ghost" onclick="showView('auth')">A minha conta</button><button class="btn primary" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">Escolher plano</button></div></div>
+<div class="pub-top"><div class="brand"><div class="logo">TA</div><div><strong>TRAFFIC ANGOLA</strong><small>Tráfego pago em Angola</small></div></div><div class="pub-links"><a href="#como">Como funciona</a><a href="#planos">Planos</a><a href="#video">Vídeo</a><a href="#faq">Perguntas</a></div><div class="actions"><button class="btn ghost" onclick="navigateTo('/cliente')">A minha conta</button><button class="btn primary" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">Escolher plano</button></div></div>
 <div class="pub-wrap">
-<section class="hero"><span class="badge blue">Facebook · Instagram · Google · YouTube</span><h1>Anúncios nas maiores plataformas, sem precisar de cartão internacional.</h1><p>A Traffic Angola paga e gere os seus anúncios. Escolhe um plano, dá acesso ao gestor e acompanha tudo no seu painel.</p><div class="cta"><button class="btn primary" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">Ver planos</button><button class="btn ghost" onclick="showView('auth')">Já tenho conta</button></div></section>
+<section class="hero"><span class="badge blue">Facebook · Instagram · Google · YouTube</span><h1>Anúncios nas maiores plataformas, sem precisar de cartão internacional.</h1><p>A Traffic Angola paga e gere os seus anúncios. Escolhe um plano, dá acesso ao gestor e acompanha tudo no seu painel.</p><div class="cta"><button class="btn primary" onclick="document.getElementById('planos').scrollIntoView({behavior:'smooth'})">Ver planos</button><button class="btn ghost" onclick="navigateTo('/cliente')">Já tenho conta</button></div></section>
 <div class="grid three" style="margin-bottom:8px"><div class="card"><div class="stat-label">Indicador de confiança 1</div><div class="stat-value">—</div><div class="sub">Usar o valor real do site anterior</div></div><div class="card"><div class="stat-label">Indicador de confiança 2</div><div class="stat-value">—</div><div class="sub">Não inventar números novos</div></div><div class="card"><div class="stat-label">Indicador de confiança 3</div><div class="stat-value">—</div><div class="sub">Preencher com dados reais</div></div></div>
 <section class="sec" id="como"><h2>Como funciona</h2><p class="lead">Quatro passos, do pedido ao acompanhamento.</p><div class="grid four"><div class="card"><div class="step-n">1</div><h3>Escolhe o plano</h3><p class="sub">Compara os planos mensais e os de 15 dias e inicia o pedido.</p></div><div class="card"><div class="step-n">2</div><h3>Concede acesso</h3><p class="sub">Adiciona o gestor no Meta Business Suite. Nunca partilhas a palavra-passe.</p></div><div class="card"><div class="step-n">3</div><h3>Paga e envia comprovativo</h3><p class="sub">Transferência BFA, Multicaixa Express ou referência. O serviço activa depois da confirmação.</p></div><div class="card"><div class="step-n">4</div><h3>Acompanha</h3><p class="sub">Vê gestor, estado, fotografias e actividades no teu painel.</p></div></div></section>
 <section class="sec" id="planos"><h2>Planos mensais</h2><p class="lead">Anúncios incluídos no preço e pagos pela agência. Pagamento antecipado.</p><div class="grid eq"><div class="plan"><span class="badge">Básico</span><div class="price">25.000 Kz <small>/mês</small></div><p class="sub">Anúncios incluídos: 12 USD (aprox. 14.400 Kz)</p><ul><li>1 anúncio por semana, 3 USD/dia</li><li>Facebook e Instagram</li><li>Gestor atribuído e organização do perfil</li><li>1 publicação por semana (4 por mês)</li><li>Relatório mensal simples</li><li>Sem monitorização semanal</li><li>Não exige site</li></ul><button class="btn ghost" onclick="openOrder('basico')">Escolher Básico</button></div><div class="plan featured"><span class="badge blue">Crescimento</span><div class="price">150.000 Kz <small>/mês</small></div><p class="sub">Anúncios incluídos: 80 USD (aprox. 96.000 Kz)</p><ul><li>8 campanhas/mês de 2 dias, 5 USD/dia</li><li>4 Facebook/Instagram, 2 Google, 2 YouTube</li><li>Gestor dedicado</li><li>12 publicações por mês (3 por semana)</li><li>Monitorização e optimização semanal</li><li>Painel de resultados e suporte por WhatsApp</li></ul><button class="btn primary" onclick="openOrder('crescimento')">Escolher Crescimento</button></div></div>
@@ -68,7 +68,7 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
 <div class="grid three">
 
   <!-- CARTÃO CLIENTE -->
-  <div class="card">
+  <div class="card" id="access-client">
     <span class="badge blue">Cliente</span>
     <h3 style="margin-top:12px">Conta de cliente</h3>
 
@@ -109,7 +109,7 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
   </div>
 
   <!-- CARTÃO GESTOR -->
-  <div class="card">
+  <div class="card" id="access-manager">
     <span class="badge purple">Gestor 1 a 4</span>
     <h3 style="margin-top:12px">Acesso da equipa</h3>
 
@@ -139,7 +139,7 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
   </div>
 
   <!-- CARTÃO ADMINISTRADOR -->
-  <div class="card">
+  <div class="card" id="access-adm">
     <span class="badge orange">ADM</span>
     <h3 style="margin-top:12px">Administração</h3>
 
@@ -2112,43 +2112,99 @@ async function callTrafficFunction(action, payload = {}, token = null) {
    4. NAVEGAÇÃO ENTRE PAINÉIS
 ===================================================== */
 
-function showView(view) {
+const TRAFFIC_ROUTES = {
+  "/": "public",
+  "/cliente": "client",
+  "/gestor": "manager",
+  "/adm": "adm"
+};
+
+function currentTrafficPath() {
+  const path = (window.location.pathname || "/").replace(/\/+$/, "") || "/";
+  return Object.prototype.hasOwnProperty.call(TRAFFIC_ROUTES, path) ? path : "/";
+}
+
+function navigateTo(path, replace = false) {
+  const safePath = Object.prototype.hasOwnProperty.call(TRAFFIC_ROUTES, path) ? path : "/";
+  if (window.location.pathname !== safePath) {
+    window.history[replace ? "replaceState" : "pushState"]({ traffic: true }, "", safePath);
+  }
+  renderTrafficRoute();
+}
+
+function renderTrafficRoute() {
+  const path = currentTrafficPath();
+  const routeView = TRAFFIC_ROUTES[path];
+  const role = window.TRAFFIC_AUTH?.role;
+  const protectedRoute = ["client", "manager", "adm"].includes(routeView);
+
+  if (protectedRoute && role === routeView) {
+    showView(routeView, false);
+    return;
+  }
+
+  if (protectedRoute && role && role !== routeView) {
+    const correctPath = role === "manager" ? "/gestor" : role === "adm" ? "/adm" : "/cliente";
+    if (path !== correctPath) {
+      window.history.replaceState({ traffic: true }, "", correctPath);
+    }
+    showView(role, false);
+    return;
+  }
+
+  if (protectedRoute) {
+    showView("auth", false);
+    const access = {
+      client: "access-client",
+      manager: "access-manager",
+      adm: "access-adm"
+    }[routeView];
+    document.querySelectorAll("#v-auth #access-client, #v-auth #access-manager, #v-auth #access-adm").forEach(card => {
+      card.style.display = card.id === access ? "block" : "none";
+    });
+    const title = document.querySelector("#v-auth .heading h1");
+    const description = document.querySelector("#v-auth .heading p");
+    const labels = {
+      client: ["Portal do Cliente", "Acesso reservado aos clientes da Traffic Angola."],
+      manager: ["Portal dos Gestores", "Acesso reservado à equipa, através de código individual."],
+      adm: ["Portal de Administração", "Acesso restrito à administração." ]
+    };
+    if (title) title.textContent = labels[routeView][0];
+    if (description) description.textContent = labels[routeView][1];
+    const back = document.querySelector("#v-auth .heading .btn");
+    if (back) back.style.display = routeView === "client" ? "inline-flex" : "none";
+    return;
+  }
+
+  showView("public", false);
+}
+
+function showView(view, syncUrl = true) {
   const protectedViews = ["client", "manager", "adm"];
 
-  if (
-    protectedViews.includes(view) &&
-    window.TRAFFIC_AUTH.role !== view
-  ) {
-    view = "auth";
+  if (protectedViews.includes(view) && window.TRAFFIC_AUTH?.role !== view) {
+    if (syncUrl) navigateTo(view === "manager" ? "/gestor" : view === "adm" ? "/adm" : "/cliente");
+    else view = "auth";
+  } else if (syncUrl) {
+    const path = view === "public" ? "/" : view === "auth" ? "/cliente" :
+      view === "manager" ? "/gestor" : view === "adm" ? "/adm" : "/cliente";
+    if (window.location.pathname !== path) {
+      window.history.pushState({ traffic: true }, "", path);
+    }
   }
 
   document.querySelectorAll(".view").forEach(element => {
-    element.classList.toggle(
-      "active",
-      element.id === "v-" + view
-    );
-  });
-
-  document.querySelectorAll(".reviewbar button").forEach(button => {
-    button.classList.toggle(
-      "on",
-      button.dataset.v === view
-    );
+    element.classList.toggle("active", element.id === "v-" + view);
   });
 
   if (protectedViews.includes(view)) {
     const activeView = document.getElementById("v-" + view);
-
     if (activeView) {
       const pages = activeView.querySelectorAll(".page");
       const hasActivePage = activeView.querySelector(".page.active");
-
-      if (pages.length && !hasActivePage) {
-        pages[0].classList.add("active");
-      }
+      if (pages.length && !hasActivePage) pages[0].classList.add("active");
     }
   }
-
   window.scrollTo(0, 0);
 }
 
@@ -2502,7 +2558,7 @@ async function trafficLogout() {
   }
 
   window.TRAFFIC_AUTH = { role: null, user: null };
-  showView("public");
+  navigateTo(role === "manager" ? "/gestor" : role === "adm" ? "/adm" : "/");
 }
 
 /* =====================================================
@@ -2700,12 +2756,18 @@ function pend(action) {
    17. INICIALIZAÇÃO
 ===================================================== */
 
+window.addEventListener("popstate", function() {
+  renderTrafficRoute();
+});
+
 document.addEventListener("DOMContentLoaded", async function() {
+  renderTrafficRoute();
   try {
     await restoreTrafficSession();
   } catch (error) {
     console.error("Erro ao recuperar sessão:", error);
   }
+  renderTrafficRoute();
 
   // Actualiza os valores do formulário, sem submeter pedidos.
   if (document.getElementById("fplan")) {
