@@ -2006,18 +2006,18 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
    1. CONFIGURAÇÃO SUPABASE
 ===================================================== */
 
+
 window.TRAFFIC_CONFIG = {
   supabaseUrl: "https://xffkcehnefhmdhmsedor.supabase.co",
   supabaseAnonKey: "sb_publishable_o3kKJDkxOP74Ddyi_DiS1g_efujjOAp"
 };
 
-if (!window.supabase) {
+if (!window.supabase || typeof window.supabase.createClient !== "function") {
   throw new Error("A biblioteca Supabase não foi carregada.");
 }
 
 window.trafficSupabase = window.supabase.createClient(
   window.TRAFFIC_CONFIG.supabaseUrl,
-  window.TRAFFIC_CONFIG.supabase.anonKey ||
   window.TRAFFIC_CONFIG.supabaseAnonKey
 );
 
@@ -2025,6 +2025,7 @@ window.TRAFFIC_AUTH = {
   role: null,
   user: null
 };
+
 
 
 /* =====================================================
