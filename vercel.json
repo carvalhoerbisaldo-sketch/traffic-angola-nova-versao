@@ -1,7 +1,21 @@
+
 {
   "rewrites": [
-    { "source": "/cliente", "destination": "/traffic-angola-novo-design.html" },
-    { "source": "/gestor", "destination": "/traffic-angola-novo-design.html" },
-    { "source": "/adm", "destination": "/traffic-angola-novo-design.html" }
+    {
+      "source": "/",
+      "destination": "/traffic-angola-novo-design.html"
+    },
+    {
+      "source": "/cliente",
+      "destination": "/traffic-angola-novo-design.html"
+    },
+    {
+      "source": "/gestor",
+      "destination": "/traffic-angola-novo-design.html"
+    },
+    {
+      "source": "/adm",
+      "destination": "/traffic-angola-novo-design.html"
+    }
   ]
 }
