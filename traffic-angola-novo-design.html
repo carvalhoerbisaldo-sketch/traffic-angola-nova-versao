@@ -1378,19 +1378,17 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
       <h1>Acessos & segurança</h1>
       <p>Gestão dos códigos individuais de acesso dos gestores.</p>
     </div>
+    <button class="btn ghost" id="partnerCodesRefresh" type="button" onclick="loadPartnerCodes()">Actualizar lista</button>
   </div>
 
   <div class="notice sec">
-    Os códigos dos gestores devem ter 12 caracteres,
-    ser aleatórios e ser apresentados apenas no momento
-    da criação ou rotação. Os códigos antigos nunca
-    deverão ser recuperáveis.
+    Os códigos têm exactamente 12 caracteres aleatórios. O código completo
+    só é apresentado uma vez, imediatamente após a criação ou rotação.
+    O servidor guarda apenas o hash. Os códigos antigos não podem ser recuperados.
   </div>
 
-  <div class="notice warn" style="margin-top:12px">
-    A geração inicial de códigos está temporariamente bloqueada.
-    A função publicada contém uma rotina de bootstrap com códigos
-    fracos. Não executar essa rotina até a sua correcção.
+  <div class="notice warn" id="partnerCodesNotice" role="status" aria-live="polite">
+    A carregar o estado dos acessos a partir do servidor...
   </div>
 
   <div class="card tablewrap" style="margin-top:15px">
@@ -1404,87 +1402,52 @@ details{background:var(--panel);border:1px solid var(--line);border-radius:11px;
           <th>Operações</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>Gestor 1</td>
-          <td>—</td>
-          <td>Sénior</td>
-          <td>Por consultar</td>
-          <td>
-            <button class="btn sm" disabled>Gerar novo</button>
-            <button class="btn sm danger" disabled>Revogar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Gestor 2</td>
-          <td>—</td>
-          <td>Sénior</td>
-          <td>Por consultar</td>
-          <td>
-            <button class="btn sm" disabled>Gerar novo</button>
-            <button class="btn sm danger" disabled>Revogar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Gestor 3</td>
-          <td>—</td>
-          <td>Sénior</td>
-          <td>Por consultar</td>
-          <td>
-            <button class="btn sm" disabled>Gerar novo</button>
-            <button class="btn sm danger" disabled>Revogar</button>
-          </td>
-        </tr>
-        <tr>
-          <td>Gestor 4</td>
-          <td>—</td>
-          <td>Júnior</td>
-          <td>Por consultar</td>
-          <td>
-            <button class="btn sm" disabled>Gerar novo</button>
-            <button class="btn sm danger" disabled>Revogar</button>
-          </td>
-        </tr>
+      <tbody id="partnerCodesRows">
+        <tr><td colspan="5" class="empty">A carregar...</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="grid two" style="margin-top:15px">
-
     <div class="card">
-      <h3>Operações de segurança</h3>
+      <h3>Regras das operações</h3>
       <p class="sub" style="line-height:1.9">
-        • Gerar código inicial individual.
-        <br>
-        • Rodar código e invalidar o anterior.
-        <br>
-        • Revogar acesso.
-        <br>
-        • Terminar sessões antigas.
-        <br>
-        • Reactivar perfil com código novo.
-        <br>
-        • Registar cada operação na auditoria.
+        • Criar código quando o gestor ainda não tem código activo.<br>
+        • Rodar código quando já existe um código activo. O anterior é invalidado.<br>
+        • Revogar código e terminar todas as sessões do gestor.<br>
+        • A criação e rotação mostram o segredo apenas uma vez.
       </p>
     </div>
-
     <div class="card">
       <h3>Princípios de segurança</h3>
       <p class="sub" style="line-height:1.9">
-        • Nenhum código antigo é apresentado.
-        <br>
-        • Nenhum segredo é guardado no HTML.
-        <br>
-        • O servidor valida todas as operações.
-        <br>
-        • O ADM utiliza autenticação própria.
-        <br>
-        • As sessões dos gestores são revogáveis.
+        • Nenhum código é guardado no HTML, armazenamento do navegador ou registos locais.<br>
+        • Todas as operações são validadas pela Edge Function e pelo Supabase.<br>
+        • O ADM utiliza autenticação própria.<br>
+        • A interface não executa nem chama a operação de bootstrap.
       </p>
     </div>
-
   </div>
 </section>
+
+<div class="modal" id="partnerCodeModal" role="dialog" aria-modal="true" aria-labelledby="partnerCodeModalTitle">
+  <div class="mbox">
+    <div class="mhead">
+      <h3 id="partnerCodeModalTitle">Novo código de acesso</h3>
+      <button class="x" type="button" aria-label="Fechar" onclick="closePartnerCodeModal()">×</button>
+    </div>
+    <div class="notice warn">
+      Copia e entrega este código ao gestor por um canal seguro. Depois de fechares
+      esta janela, o código deixa de estar disponível nesta interface.
+    </div>
+    <div class="codebox" id="partnerCodeSecret" aria-live="polite"></div>
+    <div class="actions" style="margin-top:14px">
+      <button class="btn primary" type="button" onclick="copyPartnerCode()">Copiar código</button>
+      <button class="btn ghost" type="button" onclick="closePartnerCodeModal()">Já guardei, fechar</button>
+    </div>
+    <p class="sub" id="partnerCodeCopyStatus" role="status" aria-live="polite" style="margin-top:10px"></p>
+  </div>
+</div>
 
 <!-- CONVERSAS DA EQUIPA -->
 <section class="page" id="a-chat" data-t="Conversas da equipa">
@@ -2256,6 +2219,10 @@ function go(id) {
   }
 
   window.scrollTo(0, 0);
+
+  if (id === "a-access" && window.TRAFFIC_AUTH?.role === "adm") {
+    loadPartnerCodes();
+  }
 }
 
 
@@ -2529,6 +2496,206 @@ async function admLogin() {
   }
 }
 
+
+/* =====================================================
+   11A. GESTÃO DE CÓDIGOS DOS GESTORES
+===================================================== */
+
+let partnerCodeSecretInMemory = null;
+let partnerCodeBusy = false;
+let partnerCodeManagers = [];
+
+function setPartnerCodesNotice(message, isError = false) {
+  const notice = document.getElementById("partnerCodesNotice");
+  if (!notice) return;
+  notice.textContent = message;
+  notice.className = isError ? "notice warn" : "notice";
+}
+
+function normalizePartnerList(result) {
+  const candidates = [
+    result?.partners,
+    result?.managers,
+    result?.items,
+    result?.data?.partners,
+    result?.data?.managers,
+    result?.data
+  ];
+  return candidates.find(Array.isArray) || [];
+}
+
+function getPartnerId(partner) {
+  const value = partner?.id ?? partner?.partner_id;
+  const id = Number(value);
+  return Number.isInteger(id) && id > 0 ? id : null;
+}
+
+function partnerCodeState(partner) {
+  if (typeof partner?.has_active_code === "boolean") return partner.has_active_code;
+  if (typeof partner?.code_active === "boolean") return partner.code_active;
+  if (typeof partner?.hasActiveCode === "boolean") return partner.hasActiveCode;
+  return null;
+}
+
+function partnerIsActive(partner) {
+  if (typeof partner?.active === "boolean") return partner.active;
+  if (typeof partner?.is_active === "boolean") return partner.is_active;
+  return true;
+}
+
+async function loadPartnerCodes() {
+  const rows = document.getElementById("partnerCodesRows");
+  const refresh = document.getElementById("partnerCodesRefresh");
+  if (!rows || partnerCodeBusy) return;
+
+  partnerCodeBusy = true;
+  if (refresh) refresh.disabled = true;
+  rows.innerHTML = '<tr><td colspan="5" class="empty">A consultar o servidor...</td></tr>';
+  setPartnerCodesNotice("A consultar o estado dos códigos no servidor...");
+
+  try {
+    const result = await callTrafficFunction("admin_list");
+    const partners = normalizePartnerList(result);
+    if (!partners.length) {
+      throw new Error("A resposta admin_list não contém a lista de gestores esperada.");
+    }
+
+    partnerCodeManagers = partners;
+    rows.replaceChildren();
+
+    partners.forEach((partner) => {
+      const id = getPartnerId(partner);
+      const name = String(partner?.name ?? partner?.partner_name ?? partner?.display_name ?? "—");
+      const label = String(partner?.label ?? partner?.partner_label ?? (id ? `Gestor ${id}` : "Gestor"));
+      const senior = partner?.senior === true || partner?.level === "senior" ||
+        partner?.role === "senior" || [1, 2, 3].includes(id);
+      const hasCode = partnerCodeState(partner);
+      const active = partnerIsActive(partner);
+
+      const tr = document.createElement("tr");
+      const cells = [
+        label,
+        name,
+        senior ? "Sénior" : "Júnior",
+        hasCode === null ? "Estado não devolvido pelo servidor" :
+          (hasCode ? (active ? "Código activo" : "Código activo · perfil inactivo") : "Sem código activo")
+      ];
+
+      cells.forEach((value) => {
+        const td = document.createElement("td");
+        td.textContent = value;
+        tr.appendChild(td);
+      });
+
+      const actions = document.createElement("td");
+      if (!id) {
+        actions.textContent = "ID do gestor indisponível";
+      } else if (hasCode === null) {
+        actions.textContent = "Operações bloqueadas: estado desconhecido";
+      } else {
+        if (hasCode) {
+          const rotate = document.createElement("button");
+          rotate.className = "btn sm";
+          rotate.type = "button";
+          rotate.textContent = "Rodar código";
+          rotate.addEventListener("click", () => rotatePartnerCode(id, label));
+          actions.appendChild(rotate);
+
+          const revoke = document.createElement("button");
+          revoke.className = "btn sm danger";
+          revoke.type = "button";
+          revoke.textContent = "Revogar";
+          revoke.style.marginLeft = "6px";
+          revoke.addEventListener("click", () => revokePartnerCode(id, label));
+          actions.appendChild(revoke);
+        } else {
+          const create = document.createElement("button");
+          create.className = "btn sm primary";
+          create.type = "button";
+          create.textContent = "Criar código";
+          create.addEventListener("click", () => createPartnerCode(id, label));
+          actions.appendChild(create);
+        }
+      }
+      tr.appendChild(actions);
+      rows.appendChild(tr);
+    });
+
+    setPartnerCodesNotice(`Lista actualizada. ${partners.length} registo(s) devolvido(s) pelo servidor.`);
+  } catch (error) {
+    rows.innerHTML = '<tr><td colspan="5" class="empty">Não foi possível carregar os gestores.</td></tr>';
+    setPartnerCodesNotice(error.message || "Falha ao consultar os acessos.", true);
+  } finally {
+    partnerCodeBusy = false;
+    if (refresh) refresh.disabled = false;
+  }
+}
+
+async function runPartnerCodeOperation(action, partnerId, label) {
+  if (partnerCodeBusy) return;
+  partnerCodeBusy = true;
+
+  try {
+    setPartnerCodesNotice(`A executar operação para ${label}...`);
+    const result = await callTrafficFunction(action, { partner_id: partnerId });
+    const code = result?.code ?? result?.partner_code ?? result?.access_code ?? result?.new_code;
+
+    if (action !== "admin_revoke") {
+      if (typeof code !== "string" || !/^[A-HJ-NP-Z2-9]{12}$/.test(code)) {
+        throw new Error("O servidor confirmou a operação, mas não devolveu um código válido de 12 caracteres. Não repitas a operação antes de verificar o estado do gestor.");
+      }
+      partnerCodeSecretInMemory = code;
+      document.getElementById("partnerCodeModalTitle").textContent =
+        action === "admin_create" ? `Código inicial · ${label}` : `Novo código · ${label}`;
+      document.getElementById("partnerCodeSecret").textContent = code;
+      document.getElementById("partnerCodeCopyStatus").textContent = "";
+      document.getElementById("partnerCodeModal").classList.add("open");
+    } else {
+      setPartnerCodesNotice(`Acesso de ${label} revogado. As sessões existentes foram terminadas.`);
+    }
+  } catch (error) {
+    setPartnerCodesNotice(error.message || "A operação não foi concluída.", true);
+  } finally {
+    partnerCodeBusy = false;
+    await loadPartnerCodes();
+  }
+}
+
+function createPartnerCode(partnerId, label) {
+  const confirmed = window.confirm(`Criar o código inicial de acesso para ${label}?`);
+  if (confirmed) return runPartnerCodeOperation("admin_create", partnerId, label);
+}
+
+function rotatePartnerCode(partnerId, label) {
+  const confirmed = window.confirm(`Rodar o código de ${label}? O código actual será invalidado e as sessões antigas terminadas.`);
+  if (confirmed) return runPartnerCodeOperation("admin_rotate", partnerId, label);
+}
+
+function revokePartnerCode(partnerId, label) {
+  const confirmed = window.confirm(`Revogar o acesso de ${label}? O código activo e todas as sessões serão invalidados.`);
+  if (confirmed) return runPartnerCodeOperation("admin_revoke", partnerId, label);
+}
+
+async function copyPartnerCode() {
+  if (!partnerCodeSecretInMemory) return;
+  const status = document.getElementById("partnerCodeCopyStatus");
+  try {
+    await navigator.clipboard.writeText(partnerCodeSecretInMemory);
+    if (status) status.textContent = "Código copiado. Guarda-o num local seguro.";
+  } catch {
+    if (status) status.textContent = "Não foi possível copiar automaticamente. Selecciona o código e copia-o manualmente.";
+  }
+}
+
+function closePartnerCodeModal() {
+  partnerCodeSecretInMemory = null;
+  const secret = document.getElementById("partnerCodeSecret");
+  const status = document.getElementById("partnerCodeCopyStatus");
+  const modal = document.getElementById("partnerCodeModal");
+  if (secret) secret.textContent = "";
+  if (status) status.textContent = "";
+  if (modal) modal.classList.remove("open");
+}
 
 /* =====================================================
    12. TERMINAR SESSÃO
